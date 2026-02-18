@@ -7,21 +7,26 @@ class Program
 {
     static void Main(string[] args)
     {
-        // Define input and output file paths
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string inputPptPath = Path.Combine(currentDirectory, "sample.ppt");
-        string inputPptxPath = Path.Combine(currentDirectory, "sample.pptx");
-        string outputPdfFromPpt = Path.Combine(currentDirectory, "sample_from_ppt.pdf");
-        string outputPdfFromPptx = Path.Combine(currentDirectory, "sample_from_pptx.pdf");
+        // Define input and output directories
+        string inputDir = Path.Combine(Directory.GetCurrentDirectory(), "Input");
+        string outputDir = Path.Combine(Directory.GetCurrentDirectory(), "Output");
+        if (!Directory.Exists(outputDir))
+        {
+            Directory.CreateDirectory(outputDir);
+        }
 
-        // Load PPT file and convert to PDF
-        Presentation presentationPpt = new Presentation(inputPptPath);
-        presentationPpt.Save(outputPdfFromPpt, SaveFormat.Pdf);
-        presentationPpt.Dispose();
+        // Convert PPT to PDF
+        string pptPath = Path.Combine(inputDir, "sample.ppt");
+        string pdfFromPptPath = Path.Combine(outputDir, "sample_from_ppt.pdf");
+        Aspose.Slides.Presentation presPpt = new Aspose.Slides.Presentation(pptPath);
+        presPpt.Save(pdfFromPptPath, Aspose.Slides.Export.SaveFormat.Pdf);
+        presPpt.Dispose();
 
-        // Load PPTX file and convert to PDF
-        Presentation presentationPptx = new Presentation(inputPptxPath);
-        presentationPptx.Save(outputPdfFromPptx, SaveFormat.Pdf);
-        presentationPptx.Dispose();
+        // Convert PPTX to PDF
+        string pptxPath = Path.Combine(inputDir, "sample.pptx");
+        string pdfFromPptxPath = Path.Combine(outputDir, "sample_from_pptx.pdf");
+        Aspose.Slides.Presentation presPptx = new Aspose.Slides.Presentation(pptxPath);
+        presPptx.Save(pdfFromPptxPath, Aspose.Slides.Export.SaveFormat.Pdf);
+        presPptx.Dispose();
     }
 }
