@@ -1,15 +1,11 @@
-using System;
-using System.IO;
-
 class Program
 {
     static void Main()
     {
-        // Path to the source PPT file
-        string inputPath = "input.ppt";
-
-        // Path for the converted PPTX file
-        string outputPath = "output.pptx";
+        // Input PPT file path
+        System.String inputPath = "input.ppt";
+        // Output PPTX file path
+        System.String outputPath = "output.pptx";
 
         // Load the PPT presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
