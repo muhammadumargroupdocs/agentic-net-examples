@@ -10,25 +10,23 @@ class Program
         // Create a new presentation
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
 
+        // Add an embedded audio file to the presentation
+        Aspose.Slides.IAudio audio = pres.Audios.AddAudio(File.ReadAllBytes("sample.mp3"));
+
         // Get the first slide
         Aspose.Slides.ISlide slide = pres.Slides[0];
 
-        // Open the audio file as a stream
-        System.IO.FileStream audioStream = new System.IO.FileStream("sample.mp3", System.IO.FileMode.Open, System.IO.FileAccess.Read);
-
-        // Add an embedded audio frame to the slide
-        Aspose.Slides.IAudioFrame audioFrame = slide.Shapes.AddAudioFrameEmbedded(50f, 150f, 100f, 100f, audioStream);
-
-        // Set audio playback properties
+        // Add an audio frame to the slide
+        Aspose.Slides.IAudioFrame audioFrame = slide.Shapes.AddAudioFrameEmbedded(50f, 150f, 100f, 100f, audio);
         audioFrame.PlayAcrossSlides = true;
         audioFrame.RewindAudio = true;
         audioFrame.Volume = Aspose.Slides.AudioVolumeMode.Loud;
         audioFrame.PlayMode = Aspose.Slides.AudioPlayModePreset.Auto;
 
-        // Close the audio stream
-        audioStream.Close();
-
         // Save the presentation
         pres.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+
+        // Clean up
+        pres.Dispose();
     }
 }
