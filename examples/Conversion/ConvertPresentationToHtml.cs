@@ -1,31 +1,37 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace AsposeSlidesHtmlExport
 {
-    static void Main()
+    class Program
     {
-        // Input and output file paths
-        System.String inputPath = "input.pptx";
-        System.String outputPath = "output.html";
+        static void Main(string[] args)
+        {
+            // Input and output file paths
+            string inputPath = "input.pptx";
+            string outputPath = "output.html";
 
-        // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // List of fonts to exclude from embedding (optional)
+            string[] excludeFonts = new string[] { "Arial", "Times New Roman" };
 
-        // Create HTML export options
-        Aspose.Slides.Export.HtmlOptions htmlOpt = new Aspose.Slides.Export.HtmlOptions();
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Set a simple document formatter (slides one below another)
-        htmlOpt.HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateDocumentFormatter("Document", true);
+            // Create a controller that embeds all fonts except the excluded ones
+            Aspose.Slides.Export.EmbedAllFontsHtmlController embedController = new Aspose.Slides.Export.EmbedAllFontsHtmlController(excludeFonts);
 
-        // Configure notes layout options (optional)
-        Aspose.Slides.Export.NotesCommentsLayoutingOptions notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
-        notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
-        htmlOpt.SlidesLayoutOptions = notesOptions;
+            // Set up HTML export options with the custom formatter
+            Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions
+            {
+                HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateCustomFormatter(embedController)
+            };
 
-        // Save the presentation as HTML
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOpt);
+            // Save the presentation as HTML preserving original fonts
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
 
-        // Release resources
-        presentation.Dispose();
+            // Dispose the presentation object
+            presentation.Dispose();
+        }
     }
 }
