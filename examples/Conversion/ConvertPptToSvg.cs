@@ -3,42 +3,40 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-namespace ConvertPptToSvg
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // Determine input presentation path
+        string inputPath;
+        if (args.Length > 0 && !string.IsNullOrEmpty(args[0]))
         {
-            // Input presentation path (first argument or default)
-            string inputPath;
-            if (args.Length > 0 && !String.IsNullOrEmpty(args[0]))
-                inputPath = args[0];
-            else
-                inputPath = "presentation.ppt";
+            inputPath = args[0];
+        }
+        else
+        {
+            inputPath = "sample.pptx"; // default input file
+        }
 
-            // Output HTML file path (HTML file will reference generated SVG files)
-            string outputHtmlPath = Path.ChangeExtension(inputPath, ".html");
+        // Define output SVG file name pattern
+        string formatString = "slide_{0}.svg";
 
-            // Controller for handling media files (SVG images) during HTML export
-            VideoPlayerHtmlController controller = new VideoPlayerHtmlController(String.Empty, outputHtmlPath, String.Empty);
+        // Load presentation
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
 
-            // HTML export options
-            HtmlOptions htmlOptions = new HtmlOptions(controller);
-
-            // SVG export options
-            SVGOptions svgOptions = new SVGOptions(controller);
-
-            // Use custom HTML formatter that works with the controller
-            htmlOptions.HtmlFormatter = HtmlFormatter.CreateCustomFormatter(controller);
-
-            // Set slide image format to SVG using the SVG options
-            htmlOptions.SlideImageFormat = SlideImageFormat.Svg(svgOptions);
-
-            // Load the presentation and save it as HTML with embedded SVG images
-            using (Presentation presentation = new Presentation(inputPath))
+        // Convert each slide to SVG
+        for (int index = 0; index < pres.Slides.Count; index++)
+        {
+            Aspose.Slides.ISlide slide = pres.Slides[index];
+            using (FileStream stream = new FileStream(string.Format(formatString, index + 1), FileMode.Create, FileAccess.Write))
             {
-                presentation.Save(outputHtmlPath, SaveFormat.Html, htmlOptions);
+                slide.WriteAsSvg(stream);
             }
         }
+
+        // Save presentation before exit (optional)
+        string outputPath = Path.Combine(Path.GetDirectoryName(inputPath) ?? "", Path.GetFileNameWithoutExtension(inputPath) + "_saved.pptx");
+        pres.Save(outputPath, SaveFormat.Pptx);
+        pres.Dispose();
     }
 }
