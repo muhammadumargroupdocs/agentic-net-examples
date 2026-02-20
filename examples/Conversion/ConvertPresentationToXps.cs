@@ -6,15 +6,15 @@ class Program
 {
     static void Main()
     {
-        // Input PowerPoint file
+        // Path to the source presentation
         string inputPath = "input.pptx";
-        // Desired XPS output file
+        // Path for the output XPS file
         string outputPath = "output.xps";
 
-        // Load the presentation
+        // Load the presentation from the file
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
 
-        // Convert and save to XPS format
+        // Save the presentation to XPS format using default settings
         pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Xps);
 
         // Release resources
