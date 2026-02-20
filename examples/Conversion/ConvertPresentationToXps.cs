@@ -4,24 +4,20 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Convert PPT to XPS
-        string inputPptPath = "example.ppt";
-        string outputPptXpsPath = "example_ppt.xps";
+        // Input PowerPoint file
+        string inputPath = "input.pptx";
+        // Desired XPS output file
+        string outputPath = "output.xps";
 
-        Aspose.Slides.Presentation presPpt = new Aspose.Slides.Presentation(inputPptPath);
-        // Save presentation as XPS without additional options
-        presPpt.Save(outputPptXpsPath, Aspose.Slides.Export.SaveFormat.Xps);
-        presPpt.Dispose();
+        // Load the presentation
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
 
-        // Convert PPTX to XPS
-        string inputPptxPath = "example.pptx";
-        string outputPptxXpsPath = "example_pptx.xps";
+        // Convert and save to XPS format
+        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Xps);
 
-        Aspose.Slides.Presentation presPptx = new Aspose.Slides.Presentation(inputPptxPath);
-        // Save presentation as XPS without additional options
-        presPptx.Save(outputPptxXpsPath, Aspose.Slides.Export.SaveFormat.Xps);
-        presPptx.Dispose();
+        // Release resources
+        pres.Dispose();
     }
 }
