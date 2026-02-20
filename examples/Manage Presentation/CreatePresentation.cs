@@ -5,29 +5,21 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
         // Create a new presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Get the first slide
+        // Access the first slide
         Aspose.Slides.ISlide slide = presentation.Slides[0];
 
         // Add a line shape to the slide
         slide.Shapes.AddAutoShape(Aspose.Slides.ShapeType.Line, 50, 150, 300, 0);
 
-        // Prepare output directory and file path
-        string outDir = "Output";
-        if (!Directory.Exists(outDir))
-        {
-            Directory.CreateDirectory(outDir);
-        }
-        string pptxPath = Path.Combine(outDir, "CreatedPresentation.pptx");
+        // Define the output file path
+        string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "output.pptx");
 
         // Save the presentation in PPTX format
-        presentation.Save(pptxPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Dispose the presentation object
-        presentation.Dispose();
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
