@@ -1,28 +1,39 @@
-class Program
+using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
+
+namespace ConvertPresentationToPng
 {
-    static void Main()
+    class Program
     {
-        // Path to the source presentation
-        System.String inputPath = "input.pptx";
-        // Output file name pattern for PNG images
-        System.String outputFormat = "slide_{0}.png";
-
-        // Load the presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
-
-        // Iterate through each slide and save as PNG
-        for (int index = 0; index < pres.Slides.Count; index++)
+        static void Main()
         {
-            Aspose.Slides.ISlide slide = pres.Slides[index];
-            using (Aspose.Slides.IImage image = slide.GetImage())
-            {
-                System.String outputPath = System.String.Format(outputFormat, index);
-                image.Save(outputPath, Aspose.Slides.ImageFormat.Png);
-            }
-        }
+            // Custom dimensions for the exported PNG images
+            int width = 800;
+            int height = 600;
 
-        // Save the presentation before exiting
-        pres.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
-        pres.Dispose();
+            // Path to the source PowerPoint presentation
+            string inputPath = "input.pptx";
+
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+            // Iterate through each slide and export it as a PNG image with the specified dimensions
+            foreach (Aspose.Slides.ISlide slide in presentation.Slides)
+            {
+                // Get the slide image with custom width and height
+                using (Aspose.Slides.IImage slideImage = slide.GetImage(width, height))
+                {
+                    // Build the output file name for the current slide
+                    string imageFileName = string.Format("slide_{0}.png", slide.SlideNumber);
+
+                    // Save the image in PNG format
+                    slideImage.Save(imageFileName, Aspose.Slides.ImageFormat.Png);
+                }
+            }
+
+            // Save the presentation (required by authoring rules) before exiting
+            presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        }
     }
 }
