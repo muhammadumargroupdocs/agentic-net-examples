@@ -1,25 +1,26 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Define input and output file paths
-        string inputPath = "input.ppt";
-        string outputPath = "output.ppt";
+        // Input PPT file path
+        string __INPUT_PATH__ = "input.ppt";
+        // Temporary output path for PPTX (required by the rule)
+        string __OUTPUT_PATH_PPTX__ = "output.pptx";
+        // Final output path for PPT format
+        string __OUTPUT_PATH_PPT__ = "output.ppt";
 
-        // Load the presentation from the input file
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        // Load presentation
+        Aspose.Slides.Presentation __PRESENTATION__ = new Aspose.Slides.Presentation(__INPUT_PATH__);
 
         // Remove all hyperlinks from the presentation
-        presentation.HyperlinkQueries.RemoveAllHyperlinks();
+        __PRESENTATION__.HyperlinkQueries.RemoveAllHyperlinks();
 
-        // Save the modified presentation in PPT format
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Ppt);
+        // Save as PPTX (as defined by the rule)
+        __PRESENTATION__.Save(__OUTPUT_PATH_PPTX__, Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // Clean up resources
-        presentation.Dispose();
+        // Save as PPT format after hyperlinks have been removed
+        __PRESENTATION__.Save(__OUTPUT_PATH_PPT__, Aspose.Slides.Export.SaveFormat.Ppt);
     }
 }
