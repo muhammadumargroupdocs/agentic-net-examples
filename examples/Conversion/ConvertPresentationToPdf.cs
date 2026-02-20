@@ -1,27 +1,23 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
-class Program
+namespace AsposeSlidesExample
 {
-    static void Main()
+    class Program
     {
-        // Input PowerPoint file
-        string inputPath = "input.pptx";
-        // Output PDF file
-        string outputPath = "output.pdf";
+        static void Main(string[] args)
+        {
+            // Define input and output file paths
+            System.String inputPath = "input.pptx";
+            System.String outputPath = "output.pdf";
 
-        // Load the presentation
-        Presentation pres = new Presentation(inputPath);
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Create PDF options and set custom properties
-        PdfOptions pdfOptions = new PdfOptions();
-        pdfOptions.ShowHiddenSlides = true; // include hidden slides in the PDF
+            // Set a custom slide size (width: 800 points, height: 600 points) and ensure existing content fits
+            presentation.SlideSize.SetSize(800f, 600f, Aspose.Slides.SlideSizeScaleType.EnsureFit);
 
-        // Save the presentation as PDF with the specified options
-        pres.Save(outputPath, SaveFormat.Pdf, pdfOptions);
-
-        // Dispose the presentation object
-        pres.Dispose();
+            // Save the presentation as PDF
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
+        }
     }
 }
