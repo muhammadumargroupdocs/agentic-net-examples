@@ -1,38 +1,34 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-namespace Example
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            // Create a new presentation
-            Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+        // Create a new presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-            // Create a collection for fallback font rules
-            Aspose.Slides.IFontFallBackRulesCollection rules = new Aspose.Slides.FontFallBackRulesCollection();
+        // Create a collection for font fallback rules
+        Aspose.Slides.IFontFallBackRulesCollection rules = new Aspose.Slides.FontFallBackRulesCollection();
 
-            // Latin range fallback to Arial
-            Aspose.Slides.FontFallBackRule latinRule = new Aspose.Slides.FontFallBackRule(0x0000u, 0x007Fu, "Arial");
-            rules.Add(latinRule);
+        // Add a fallback rule for Cyrillic characters
+        rules.Add(new Aspose.Slides.FontFallBackRule(0x400u, 0x4FFu, "Times New Roman"));
 
-            // Cyrillic range fallback to Times New Roman
-            Aspose.Slides.FontFallBackRule cyrillicRule = new Aspose.Slides.FontFallBackRule(0x0400u, 0x04FFu, "Times New Roman");
-            rules.Add(cyrillicRule);
+        // Add a fallback rule for basic emoji range
+        rules.Add(new Aspose.Slides.FontFallBackRule(0x1F600u, 0x1F64Fu, "Segoe UI Emoji"));
 
-            // Emoji range fallback to multiple fonts
-            string[] emojiFonts = new string[] { "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji" };
-            Aspose.Slides.FontFallBackRule emojiRule = new Aspose.Slides.FontFallBackRule(0x1F600u, 0x1F64Fu, emojiFonts);
-            rules.Add(emojiRule);
+        // Add a fallback rule with multiple emoji fonts for a broader range
+        string[] emojiFonts = new string[] { "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji" };
+        rules.Add(new Aspose.Slides.FontFallBackRule(0x1F300u, 0x1F5FFu, emojiFonts));
 
-            // Assign the fallback rules collection to the presentation
-            pres.FontsManager.FontFallBackRulesCollection = rules;
+        // Assign the fallback rules collection to the presentation's FontsManager
+        presentation.FontsManager.FontFallBackRulesCollection = rules;
 
-            // Save the presentation
-            pres.Save("FallbackFontsPresentation.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        // Save the presentation to a file
+        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
 
-            // Clean up
-            pres.Dispose();
-        }
+        // Clean up resources
+        presentation.Dispose();
     }
 }
