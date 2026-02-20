@@ -1,18 +1,20 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Path to the source presentation
+        // Input presentation file path
         System.String inputPath = "input.pptx";
-        // Path where the responsive HTML will be saved
+        // Output HTML file path
         System.String outputPath = "output.html";
 
         // Load the presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Configure HTML export options for responsive layout
+        // Configure HTML export options for responsive SVG layout
         Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
         htmlOptions.SvgResponsiveLayout = true;
 
