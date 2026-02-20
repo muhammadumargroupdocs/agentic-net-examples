@@ -3,44 +3,27 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-namespace AddSvgToPresentation
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            // Define input SVG file path
-            string svgFilePath = Path.Combine(Environment.CurrentDirectory, "sample.svg");
+        // Paths for SVG file and output presentation
+        string dataDir = Environment.CurrentDirectory;
+        string svgFilePath = Path.Combine(dataDir, "example.svg");
+        string outputPath = Path.Combine(dataDir, "output.pptx");
 
-            // Define output PPTX file path
-            string outputPptxPath = Path.Combine(Environment.CurrentDirectory, "output.pptx");
+        // Create a new presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-            // Create a new presentation
-            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
+        // Load SVG image and add it to the presentation's image collection
+        Aspose.Slides.ISvgImage svgImage = new Aspose.Slides.SvgImage(svgFilePath);
+        Aspose.Slides.IPPImage pptxImage = presentation.Images.AddImage(svgImage);
 
-            // Load SVG image from file
-            Aspose.Slides.SvgImage svgImage = new Aspose.Slides.SvgImage(svgFilePath);
+        // Insert the SVG image as a picture shape on the first slide
+        Aspose.Slides.IShape pictureShape = presentation.Slides[0].Shapes.AddPictureFrame(
+            Aspose.Slides.ShapeType.Rectangle, 50, 50, 400, 300, pptxImage);
 
-            // Add SVG image to the presentation's image collection
-            Aspose.Slides.IPPImage addedImage = presentation.Images.AddImage(svgImage);
-
-            // Get the first slide (created by default)
-            Aspose.Slides.ISlide slide = presentation.Slides[0];
-
-            // Add the SVG image to the slide as a picture frame
-            slide.Shapes.AddPictureFrame(
-                Aspose.Slides.ShapeType.Rectangle,
-                50,    // X position
-                50,    // Y position
-                400,   // Width
-                300,   // Height
-                addedImage);
-
-            // Save the presentation in PPTX format
-            presentation.Save(outputPptxPath, SaveFormat.Pptx);
-
-            // Clean up resources
-            presentation.Dispose();
-        }
+        // Save the presentation
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
