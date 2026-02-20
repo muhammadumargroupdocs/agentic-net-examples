@@ -1,33 +1,33 @@
 using System;
-using System.IO;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Define the directory containing the presentations
-        System.String dataDir = @"C:\Data\";
-
-        // Define file paths
-        System.String templatePath = Path.Combine(dataDir, "template.pptx");
-        System.String targetPath = Path.Combine(dataDir, "target.pptx");
-        System.String outputPath = Path.Combine(dataDir, "output.pptx");
+        // Define paths
+        string dataDir = "C:\\Data\\";
+        string templatePath = dataDir + "Template.pptx";
+        string outputPath = dataDir + "Result.pptx";
 
         // Load the template presentation
-        using (Aspose.Slides.Presentation templatePres = new Aspose.Slides.Presentation(templatePath))
-        {
-            // Load the target presentation
-            using (Aspose.Slides.Presentation targetPres = new Aspose.Slides.Presentation(targetPath))
-            {
-                // Get the first slide from the template
-                Aspose.Slides.ISlide sourceSlide = templatePres.Slides[0];
+        Presentation templatePresentation = new Presentation(templatePath);
 
-                // Add a clone of the template slide to the target presentation
-                targetPres.Slides.AddClone(sourceSlide);
+        // Create a new presentation (target)
+        Presentation targetPresentation = new Presentation();
 
-                // Save the updated presentation
-                targetPres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
-            }
-        }
+        // Get the first slide from the template
+        ISlide templateSlide = templatePresentation.Slides[0];
+
+        // Add a clone of the template slide to the target presentation
+        targetPresentation.Slides.AddClone(templateSlide);
+
+        // Save the target presentation
+        targetPresentation.Save(outputPath, SaveFormat.Pptx);
+
+        // Clean up
+        templatePresentation.Dispose();
+        targetPresentation.Dispose();
     }
 }
