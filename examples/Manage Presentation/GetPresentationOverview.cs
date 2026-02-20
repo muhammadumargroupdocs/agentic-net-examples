@@ -1,30 +1,41 @@
 using System;
-using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
+using Aspose.Slides.Util;
 
-class Program
+namespace PresentationOverview
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Path to the presentation to open
-        string inputPath = "input.pptx";
-        // Path where the presentation will be saved
-        string outputPath = "output.pptx";
+        static void Main(string[] args)
+        {
+            // Path to the input presentation file
+            string inputPath = "input.pptx";
 
-        // Open an existing presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+            // Load the presentation
+            Presentation pres = new Presentation(inputPath);
 
-        // Access the first slide (example of using the opened presentation)
-        Aspose.Slides.ISlide firstSlide = pres.Slides[0];
+            // Output basic information about the presentation
+            int slideCount = pres.Slides.Count;
+            Console.WriteLine("Number of slides: " + slideCount);
 
-        // Perform any desired operations on the presentation here
-        // ...
+            // Iterate through each slide and extract text from all text boxes
+            for (int i = 0; i < slideCount; i++)
+            {
+                ISlide slide = pres.Slides[i];
+                System.Collections.Generic.IEnumerable<ITextFrame> textFrames = SlideUtil.GetAllTextBoxes(slide);
+                foreach (ITextFrame textFrame in textFrames)
+                {
+                    Console.WriteLine("Slide " + (i + 1) + " text: " + textFrame.Text);
+                }
+            }
 
-        // Save the presentation before exiting
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            // Save the presentation before exiting
+            string outputPath = "output.pptx";
+            pres.Save(outputPath, SaveFormat.Pptx);
 
-        // Release resources
-        pres.Dispose();
+            // Clean up resources
+            pres.Dispose();
+        }
     }
 }
