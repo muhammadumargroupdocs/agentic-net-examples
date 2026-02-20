@@ -1,54 +1,40 @@
 using System;
-using System.Net;
 
-class Program
+namespace MyApp
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Path to save the generated PPTX file
-        string presentationPath = "output.pptx";
-
-        // URLs of images to be added to the presentation
-        string[] imageUrls = new string[]
+        static void Main(string[] args)
         {
-            "https://example.com/image1.jpg",
-            "https://example.com/image2.png"
-        };
+            // URL of the image to download
+            string imageUrl = "https://example.com/image.jpg";
+            // Output PPTX file path
+            string outputPath = "output.pptx";
 
-        // Create a new presentation (contains one empty slide by default)
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
-
-        // Reference to the first slide
-        Aspose.Slides.ISlide slide = pres.Slides[0];
-
-        // Initial position and size for picture frames
-        int left = 10;
-        int top = 10;
-        int width = 300;
-        int height = 200;
-
-        // Iterate over each image URL, download it, and add to the slide
-        foreach (string url in imageUrls)
-        {
             // Download image data from the web
-            WebClient client = new WebClient();
-            byte[] imageData = client.DownloadData(url);
-            client.Dispose();
+            System.Net.WebClient webClient = new System.Net.WebClient();
+            byte[] imageData = webClient.DownloadData(imageUrl);
+            webClient.Dispose();
 
-            // Add the image to the presentation's image collection
-            Aspose.Slides.IPPImage img = pres.Images.AddImage(imageData);
+            // Create a new presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-            // Insert the image as a picture frame on the slide
-            slide.Shapes.AddPictureFrame(Aspose.Slides.ShapeType.Rectangle, left, top, width, height, img);
+            // Add the downloaded image to the presentation's image collection
+            Aspose.Slides.IPPImage pptImage = presentation.Images.AddImage(imageData);
 
-            // Update vertical position for the next image
-            top += height + 10;
+            // Get the first slide
+            Aspose.Slides.ISlide slide = presentation.Slides[0];
+
+            // Add a picture frame with the downloaded image
+            slide.Shapes.AddPictureFrame(Aspose.Slides.ShapeType.Rectangle, 50, 150, 400, 300, pptImage);
+
+            // Add a heading shape (title) to the slide
+            Aspose.Slides.IAutoShape headingShape = (Aspose.Slides.IAutoShape)slide.Shapes.AddAutoShape(Aspose.Slides.ShapeType.Rectangle, 50, 50, 400, 50);
+            headingShape.TextFrame.Text = "Sample Heading";
+
+            // Save the presentation as PPTX
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            presentation.Dispose();
         }
-
-        // Save the presentation to a PPTX file
-        pres.Save(presentationPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Release resources
-        pres.Dispose();
     }
 }
