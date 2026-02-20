@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
@@ -6,24 +7,63 @@ class Program
 {
     static void Main()
     {
-        // Create a new presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
+        // Paths for input template (optional) and output presentation
+        string inputPath = Path.Combine(Environment.CurrentDirectory, "template.pptx");
+        string outputPath = Path.Combine(Environment.CurrentDirectory, "output.pptx");
 
-        // Get the first master slide
-        Aspose.Slides.IMasterSlide master = presentation.Masters[0];
-
-        // Retrieve a predefined layout slide (TitleAndObject or fallback to Title)
-        Aspose.Slides.ILayoutSlide layout = master.LayoutSlides.GetByType(Aspose.Slides.SlideLayoutType.TitleAndObject);
-        if (layout == null)
+        // Load existing presentation if template exists; otherwise create a new one
+        Aspose.Slides.Presentation presentation;
+        if (File.Exists(inputPath))
         {
-            layout = master.LayoutSlides.GetByType(Aspose.Slides.SlideLayoutType.Title);
+            presentation = new Aspose.Slides.Presentation(inputPath);
+        }
+        else
+        {
+            presentation = new Aspose.Slides.Presentation();
         }
 
-        // Add a new slide based on the selected layout
-        Aspose.Slides.ISlide newSlide = presentation.Slides.AddEmptySlide(layout);
+        // Get layout slides collection from the first master slide
+        Aspose.Slides.IMasterLayoutSlideCollection layoutSlides = presentation.Masters[0].LayoutSlides;
+
+        // Try to obtain a TitleAndObject layout, fallback to Title, then Blank
+        Aspose.Slides.ILayoutSlide layoutSlide = layoutSlides.GetByType(Aspose.Slides.SlideLayoutType.TitleAndObject) ??
+                                                layoutSlides.GetByType(Aspose.Slides.SlideLayoutType.Title);
+        if (layoutSlide == null)
+        {
+            foreach (Aspose.Slides.ILayoutSlide ls in layoutSlides)
+            {
+                if (ls.Name == "Title and Content")
+                {
+                    layoutSlide = ls;
+                    break;
+                }
+            }
+        }
+        if (layoutSlide == null)
+        {
+            foreach (Aspose.Slides.ILayoutSlide ls in layoutSlides)
+            {
+                if (ls.Name == "Title")
+                {
+                    layoutSlide = ls;
+                    break;
+                }
+            }
+        }
+        if (layoutSlide == null)
+        {
+            layoutSlide = layoutSlides.GetByType(Aspose.Slides.SlideLayoutType.Blank);
+        }
+        if (layoutSlide == null)
+        {
+            layoutSlide = layoutSlides.Add(Aspose.Slides.SlideLayoutType.TitleAndObject, "TitleAndObject");
+        }
+
+        // Insert a new empty slide at the beginning using the selected layout
+        presentation.Slides.InsertEmptySlide(0, layoutSlide);
 
         // Save the presentation
-        string outPath = System.IO.Path.Combine(System.Environment.CurrentDirectory, "Output.pptx");
-        presentation.Save(outPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Dispose();
     }
 }
