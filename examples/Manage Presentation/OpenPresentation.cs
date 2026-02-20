@@ -6,27 +6,22 @@ class Program
 {
     static void Main()
     {
-        // Define source and destination file paths
-        System.String sourcePath = "input.pptx";
-        System.String destPath = "output.pptx";
+        // Path to the password‑protected presentation
+        string inputPath = "protected.pptx";
+        // Path where the presentation will be saved after opening
+        string outputPath = "unprotected.pptx";
 
-        // Open the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath);
+        // Create load options and set the password required to open the file
+        Aspose.Slides.LoadOptions loadOptions = new Aspose.Slides.LoadOptions();
+        loadOptions.Password = "myPassword";
 
-        // Access layout formats (optional demonstration)
-        // foreach (Aspose.Slides.ILayoutSlide layoutSlide in presentation.LayoutSlides)
-        // {
-        //     foreach (Aspose.Slides.IShape shape in layoutSlide.Shapes)
-        //     {
-        //         Aspose.Slides.IFillFormat fillFormat = shape.FillFormat;
-        //         Aspose.Slides.ILineFormat lineFormat = shape.LineFormat;
-        //     }
-        // }
+        // Open the presentation using the load options with the password
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath, loadOptions);
 
-        // Save the presentation
-        presentation.Save(destPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        // Save the presentation (without password) before exiting
+        presentation.Save(outputPath, SaveFormat.Pptx);
 
-        // Dispose the presentation
+        // Release resources
         presentation.Dispose();
     }
 }
