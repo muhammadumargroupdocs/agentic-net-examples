@@ -1,36 +1,31 @@
 using System;
 
-class Program
+namespace PresentationApp
 {
-    // Entry point of the console application
-    static void Main()
+    class Program
     {
-        // Path to the source PPTX file
-        string inputPath = "input.pptx";
-        // Path where the updated PPTX will be saved
-        string outputPath = "output.pptx";
-
-        // Load the presentation from the input file
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
-
-        // Get the first slide in the presentation
-        Aspose.Slides.ISlide slide = presentation.Slides[0];
-
-        // Iterate through all shapes on the slide
-        foreach (Aspose.Slides.IShape shape in slide.Shapes)
+        static void Main(string[] args)
         {
-            // Check if the shape has a placeholder and is an AutoShape (contains a TextFrame)
-            if (shape.Placeholder != null && shape is Aspose.Slides.IAutoShape)
-            {
-                // Cast to IAutoShape and update its text
-                ((Aspose.Slides.IAutoShape)shape).TextFrame.Text = "Updated text";
-            }
+            // Create a new presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
+
+            // Get the first slide
+            Aspose.Slides.ISlide slide = presentation.Slides[0];
+
+            // Add a rectangle auto shape
+            Aspose.Slides.IAutoShape autoShape = slide.Shapes.AddAutoShape(Aspose.Slides.ShapeType.Rectangle, 50, 50, 400, 100);
+
+            // Add a text frame with the word "Overview"
+            autoShape.AddTextFrame("Overview");
+
+            // Define output path
+            string outputPath = System.IO.Path.Combine(System.Environment.CurrentDirectory, "OverviewPresentation.pptx");
+
+            // Save the presentation as PPTX
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+
+            // Dispose the presentation
+            presentation.Dispose();
         }
-
-        // Save the modified presentation as PPTX
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Release resources
-        presentation.Dispose();
     }
 }
