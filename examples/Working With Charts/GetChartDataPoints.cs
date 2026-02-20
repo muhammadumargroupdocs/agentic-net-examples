@@ -1,77 +1,36 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Charts;
-using Aspose.Slides.Export;
+using System.Drawing;
 
-namespace ChartDemo
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            // Create a new presentation
-            Presentation pres = new Presentation();
+        // Create a new presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-            // Get the first slide
-            ISlide slide = pres.Slides[0];
+        // Add a Sunburst chart on the first slide
+        Aspose.Slides.Charts.IChart chart = presentation.Slides[0].Shapes.AddChart(
+            Aspose.Slides.Charts.ChartType.Sunburst, 50, 50, 500, 400);
 
-            // -------------------- Treemap Chart --------------------
-            IChart treemapChart = slide.Shapes.AddChart(ChartType.Treemap, 50, 50, 500, 400);
-            treemapChart.ChartData.Categories.Clear();
-            treemapChart.ChartData.Series.Clear();
+        // Access the data points collection of the first series
+        Aspose.Slides.Charts.IChartDataPointCollection dataPoints = chart.ChartData.Series[0].DataPoints;
 
-            IChartDataWorkbook wb = treemapChart.ChartData.ChartDataWorkbook;
-            wb.Clear(0); // clear existing data
+        // Show the value for the fourth data point (index 3)
+        dataPoints[3].DataPointLevels[0].Label.DataLabelFormat.ShowValue = true;
 
-            // Add categories (leaves) with grouping levels
-            IChartCategory leaf = treemapChart.ChartData.Categories.Add(wb.GetCell(0, "C1", "Leaf1"));
-            leaf.GroupingLevels.SetGroupingItem(0, "Stem1");
-            leaf.GroupingLevels.SetGroupingItem(1, "Branch1");
+        // Customize the label of the first data point's third level
+        Aspose.Slides.Charts.IDataLabel branch1Label = dataPoints[0].DataPointLevels[2].Label;
+        branch1Label.DataLabelFormat.ShowCategoryName = true;
+        branch1Label.DataLabelFormat.ShowSeriesName = true;
+        branch1Label.DataLabelFormat.TextFormat.PortionFormat.FillFormat.FillType = Aspose.Slides.FillType.Solid;
+        branch1Label.DataLabelFormat.TextFormat.PortionFormat.FillFormat.SolidFillColor.Color = Color.Yellow;
 
-            treemapChart.ChartData.Categories.Add(wb.GetCell(0, "C2", "Leaf2"));
-            leaf = treemapChart.ChartData.Categories.Add(wb.GetCell(0, "C3", "Leaf3"));
-            leaf.GroupingLevels.SetGroupingItem(0, "Stem2");
-            leaf.GroupingLevels.SetGroupingItem(1, "Branch2");
-            treemapChart.ChartData.Categories.Add(wb.GetCell(0, "C4", "Leaf4"));
+        // Change the fill color of the tenth data point (index 9)
+        Aspose.Slides.Charts.IFormat steam4Format = dataPoints[9].Format;
+        steam4Format.Fill.FillType = Aspose.Slides.FillType.Solid;
+        steam4Format.Fill.SolidFillColor.Color = Color.FromArgb(255, 0, 128, 255);
 
-            // Add series and data points
-            IChartSeries treemapSeries = treemapChart.ChartData.Series.Add(ChartType.Treemap);
-            treemapSeries.Labels.DefaultDataLabelFormat.ShowCategoryName = true;
-            treemapSeries.DataPoints.AddDataPointForTreemapSeries(wb.GetCell(0, "D1", 10));
-            treemapSeries.DataPoints.AddDataPointForTreemapSeries(wb.GetCell(0, "D2", 20));
-            treemapSeries.DataPoints.AddDataPointForTreemapSeries(wb.GetCell(0, "D3", 30));
-            treemapSeries.DataPoints.AddDataPointForTreemapSeries(wb.GetCell(0, "D4", 40));
-            treemapSeries.ParentLabelLayout = ParentLabelLayoutType.Overlapping;
-
-            // -------------------- Sunburst Chart --------------------
-            IChart sunburstChart = slide.Shapes.AddChart(ChartType.Sunburst, 50, 500, 500, 400);
-            sunburstChart.ChartData.Categories.Clear();
-            sunburstChart.ChartData.Series.Clear();
-
-            IChartDataWorkbook wbSun = sunburstChart.ChartData.ChartDataWorkbook;
-            wbSun.Clear(0);
-
-            // Add categories (leaves) with grouping levels
-            IChartCategory sunLeaf = sunburstChart.ChartData.Categories.Add(wbSun.GetCell(0, "C1", "Sector1"));
-            sunLeaf.GroupingLevels.SetGroupingItem(0, "Root");
-            sunLeaf.GroupingLevels.SetGroupingItem(1, "Level1");
-
-            sunburstChart.ChartData.Categories.Add(wbSun.GetCell(0, "C2", "Sector2"));
-            sunLeaf = sunburstChart.ChartData.Categories.Add(wbSun.GetCell(0, "C3", "Sector3"));
-            sunLeaf.GroupingLevels.SetGroupingItem(0, "Root");
-            sunLeaf.GroupingLevels.SetGroupingItem(1, "Level2");
-            sunburstChart.ChartData.Categories.Add(wbSun.GetCell(0, "C4", "Sector4"));
-
-            // Add series and data points
-            IChartSeries sunburstSeries = sunburstChart.ChartData.Series.Add(ChartType.Sunburst);
-            sunburstSeries.Labels.DefaultDataLabelFormat.ShowCategoryName = true;
-            sunburstSeries.DataPoints.AddDataPointForSunburstSeries(wbSun.GetCell(0, "D1", 15));
-            sunburstSeries.DataPoints.AddDataPointForSunburstSeries(wbSun.GetCell(0, "D2", 25));
-            sunburstSeries.DataPoints.AddDataPointForSunburstSeries(wbSun.GetCell(0, "D3", 35));
-            sunburstSeries.DataPoints.AddDataPointForSunburstSeries(wbSun.GetCell(0, "D4", 45));
-
-            // Save the presentation
-            pres.Save("TreemapSunburstDemo.pptx", SaveFormat.Pptx);
-        }
+        // Save the presentation
+        presentation.Save("DataPointsDemo.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
