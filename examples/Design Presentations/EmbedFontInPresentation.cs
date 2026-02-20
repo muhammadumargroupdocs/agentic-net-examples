@@ -1,29 +1,46 @@
 using System;
-using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Define file paths
-        string presentationPath = "output.pptx";
-        string fontPath = "MyFont.ttf";
+        // Path to the source presentation
+        System.String inputPath = "input.pptx";
+        // Path to save the presentation with embedded fonts
+        System.String outputPath = "output.pptx";
 
-        // Create a new presentation
-        Presentation presentation = new Presentation();
+        // Load the presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Load the TrueType font bytes
-        byte[] fontBytes = File.ReadAllBytes(fontPath);
+        // Get all fonts used in the presentation
+        Aspose.Slides.IFontData[] allFonts = presentation.FontsManager.GetFonts();
+        // Get fonts that are already embedded
+        Aspose.Slides.IFontData[] embeddedFonts = presentation.FontsManager.GetEmbeddedFonts();
 
-        // Embed the font with all characters
-        presentation.FontsManager.AddEmbeddedFont(fontBytes, Aspose.Slides.Export.EmbedFontCharacters.All);
+        // Embed each font that is not already embedded
+        foreach (Aspose.Slides.IFontData font in allFonts)
+        {
+            bool isEmbedded = false;
+            foreach (Aspose.Slides.IFontData ef in embeddedFonts)
+            {
+                if (ef.Equals(font))
+                {
+                    isEmbedded = true;
+                    break;
+                }
+            }
+            if (!isEmbedded)
+            {
+                // Embed the font with all characters
+                presentation.FontsManager.AddEmbeddedFont(font, Aspose.Slides.Export.EmbedFontCharacters.All);
+            }
+        }
 
         // Save the presentation
-        presentation.Save(presentationPath, SaveFormat.Pptx);
-
-        // Clean up
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        // Dispose the presentation object
         presentation.Dispose();
     }
 }
