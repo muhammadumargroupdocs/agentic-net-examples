@@ -1,28 +1,26 @@
 using System;
 using Aspose.Slides;
 using Aspose.Slides.Export;
+using System.Drawing.Imaging;
 
 class Program
 {
     static void Main()
     {
-        // Path to the source presentation
-        System.String inputPath = "input.pptx";
-
+        // Path to the source PowerPoint file
+        string inputPath = "presentation.pptx";
         // Path for the generated HTML file
-        System.String outputPath = "output.html";
+        string outputPath = "presentation.html";
 
         // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        using (Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath))
+        {
+            // Configure HTML export options with high-quality images at 150 DPI
+            Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+            htmlOptions.SlideImageFormat = Aspose.Slides.Export.SlideImageFormat.Bitmap(150f, ImageFormat.Png);
 
-        // Configure HTML export options (responsive layout)
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
-        htmlOptions.SvgResponsiveLayout = true;
-
-        // Save the presentation as a single HTML file
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
-
-        // Release resources
-        presentation.Dispose();
+            // Save the presentation as HTML
+            pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+        }
     }
 }
