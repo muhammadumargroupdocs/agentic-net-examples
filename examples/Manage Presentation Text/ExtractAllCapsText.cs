@@ -1,36 +1,41 @@
 using System;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
-using Aspose.Slides.Util;
 
-namespace ManagePresentationText
+namespace PresentationTextExtraction
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Input and output file paths
-            string inputPath = "input.pptx";
-            string outputPath = "output.pptx";
+            // Input PPTX file path
+            string inputFileName = "input.pptx";
+            string inputFilePath = Path.Combine(Directory.GetCurrentDirectory(), inputFileName);
 
-            // Load the presentation for extraction
-            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // Load presentation for saving later
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputFilePath);
 
-            // Use PresentationFactory to get raw text from the presentation
-            Aspose.Slides.PresentationFactory factory = Aspose.Slides.PresentationFactory.Instance;
-            Aspose.Slides.IPresentationText ipresentationText = factory.GetPresentationText(inputPath, Aspose.Slides.TextExtractionArrangingMode.Unarranged);
-            // Cast to concrete PresentationText to access SlidesText property
-            Aspose.Slides.PresentationText presentationText = (Aspose.Slides.PresentationText)ipresentationText;
+            // Extract raw text from the presentation (unarranged)
+            Aspose.Slides.IPresentationText presentationText = Aspose.Slides.PresentationFactory.Instance.GetPresentationText(
+                inputFilePath,
+                Aspose.Slides.TextExtractionArrangingMode.Unarranged);
 
-            // Iterate through each slide's extracted text
-            foreach (Aspose.Slides.ISlideText slideText in presentationText.SlidesText)
+            // Iterate through each slide's text and output all‑caps strings
+            for (int i = 0; i < presentationText.SlidesText.Length; i++)
             {
-                // Output the slide text (all-caps effect handling can be added here if needed)
-                Console.WriteLine(slideText.Text);
+                Aspose.Slides.ISlideText slideText = presentationText.SlidesText[i];
+                string text = slideText.Text;
+
+                if (!string.IsNullOrEmpty(text) && text == text.ToUpper())
+                {
+                    Console.WriteLine("Slide {0} All‑Caps Text: {1}", i + 1, text);
+                }
             }
 
-            // Save the presentation before exiting (as required by authoring rules)
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            // Save the presentation before exiting (overwrites original)
+            presentation.Save(inputFilePath, Aspose.Slides.Export.SaveFormat.Pptx);
+            presentation.Dispose();
         }
     }
 }
