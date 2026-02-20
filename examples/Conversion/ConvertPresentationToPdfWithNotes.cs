@@ -4,26 +4,25 @@ class Program
 {
     static void Main()
     {
-        // Input PowerPoint file path
+        // Input and output file paths
         System.String inputPath = "input.pptx";
-        // Output PDF file path
         System.String outputPath = "output.pdf";
 
-        // Load presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        // Load the presentation
+        Aspose.Slides.Presentation __presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Create PDF options
-        Aspose.Slides.Export.PdfOptions pdfOptions = new Aspose.Slides.Export.PdfOptions();
+        // Initialize PDF options
+        Aspose.Slides.Export.PdfOptions __pdfOptions = new Aspose.Slides.Export.PdfOptions();
 
-        // Configure notes layout options to include notes at the bottom
-        Aspose.Slides.Export.NotesCommentsLayoutingOptions notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
-        notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
-        pdfOptions.SlidesLayoutOptions = notesOptions;
+        // Set notes layout options
+        Aspose.Slides.Export.NotesCommentsLayoutingOptions __notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
+        __notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
+        __pdfOptions.SlidesLayoutOptions = __notesOptions;
 
-        // Save presentation as PDF with notes
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf, pdfOptions);
+        // Save presentation to PDF with notes
+        __presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf, __pdfOptions);
 
-        // Release resources
-        presentation.Dispose();
+        // Clean up
+        __presentation.Dispose();
     }
 }
