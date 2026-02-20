@@ -5,30 +5,36 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Input PPT file path
-        string inputPath = (args.Length > 0 && !String.IsNullOrEmpty(args[0])) ? args[0] : "input.ppt";
+        // Input PowerPoint file
+        string inputPath = "input.pptx";
 
-        // Directory where SVG files will be saved
-        string outputDir = Path.GetDirectoryName(inputPath);
-        string fileNameWithoutExt = Path.GetFileNameWithoutExtension(inputPath);
+        // Output folder for SVG files
+        string outputFolder = "output";
+        Directory.CreateDirectory(outputFolder);
 
-        // Load presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        // Format string for SVG file names (slide numbers start from 1)
+        string formatString = Path.Combine(outputFolder, "slide_{0}.svg");
+
+        // Load the presentation
+        Presentation pres = new Presentation(inputPath);
+
+        // Export each slide to an SVG file using a FileStream
+        for (int index = 0; index < pres.Slides.Count; index++)
         {
-            // Iterate through each slide and save as SVG
-            foreach (Aspose.Slides.ISlide slide in presentation.Slides)
+            ISlide slide = pres.Slides[index];
+            using (FileStream stream = new FileStream(string.Format(formatString, index + 1), FileMode.Create, FileAccess.Write))
             {
-                string svgPath = Path.Combine(outputDir, fileNameWithoutExt + "_slide_" + slide.SlideNumber + ".svg");
-                using (FileStream fs = new FileStream(svgPath, FileMode.Create))
-                {
-                    slide.WriteAsSvg(fs);
-                }
+                slide.WriteAsSvg(stream);
             }
-
-            // Save presentation before exiting (optional, keeps original format)
-            presentation.Save(inputPath, SaveFormat.Pptx);
         }
+
+        // Save the presentation before exiting (optional, here saved as PPTX)
+        string savedPath = Path.Combine(outputFolder, "saved.pptx");
+        pres.Save(savedPath, SaveFormat.Pptx);
+
+        // Clean up
+        pres.Dispose();
     }
 }
