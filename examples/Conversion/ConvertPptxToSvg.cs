@@ -1,34 +1,39 @@
 using System;
 using System.IO;
 using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Path to the input PPTX file
-        string inputPath = "input.pptx";
+        // Determine input PPTX file path
+        string inputPath;
+        if (args.Length > 0 && !string.IsNullOrEmpty(args[0]))
+        {
+            inputPath = args[0];
+        }
+        else
+        {
+            inputPath = "presentation.pptx";
+        }
 
-        // Directory where SVG files will be generated
-        string outputFolder = "output_svg";
-        Directory.CreateDirectory(outputFolder);
+        // Define output SVG file name pattern
+        string formatString = "slide_{0}.svg";
 
         // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
 
-        // Create default SVG options
-        Aspose.Slides.Export.SVGOptions svgOptions = new Aspose.Slides.Export.SVGOptions();
+        // Export each slide to an individual SVG file
+        for (int index = 0; index < pres.Slides.Count; index++)
+        {
+            Aspose.Slides.ISlide slide = pres.Slides[index];
+            using (FileStream stream = new FileStream(string.Format(formatString, index + 1), FileMode.Create, FileAccess.Write))
+            {
+                slide.WriteAsSvg(stream);
+            }
+        }
 
-        // Configure HTML export to use SVG for slide images
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
-        htmlOptions.SlideImageFormat = Aspose.Slides.Export.SlideImageFormat.Svg(svgOptions);
-
-        // Save the presentation as HTML (generates SVG files in the output folder)
-        string htmlOutputPath = Path.Combine(outputFolder, "presentation.html");
-        presentation.Save(htmlOutputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
-
-        // Remove the intermediate HTML file if only SVG files are needed
-        File.Delete(htmlOutputPath);
+        // Clean up resources
+        pres.Dispose();
     }
 }
