@@ -1,39 +1,49 @@
 using System;
 using System.IO;
 using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Determine input PPTX file path
+        // Determine input PPTX path
         string inputPath;
-        if (args.Length > 0 && !string.IsNullOrEmpty(args[0]))
+        if (args.Length > 0 && !String.IsNullOrEmpty(args[0]))
         {
             inputPath = args[0];
         }
         else
         {
-            inputPath = "presentation.pptx";
+            inputPath = "sample.pptx"; // fallback path
         }
 
-        // Define output SVG file name pattern
-        string formatString = "slide_{0}.svg";
+        // Prepare output directory for SVG files
+        string directory = Path.GetDirectoryName(inputPath);
+        string filenameWithoutExt = Path.GetFileNameWithoutExtension(inputPath);
+        string outputDir = Path.Combine(directory ?? String.Empty, filenameWithoutExt + "_svg");
+        Directory.CreateDirectory(outputDir);
 
-        // Load the presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
-
-        // Export each slide to an individual SVG file
-        for (int index = 0; index < pres.Slides.Count; index++)
+        // Load presentation
+        using (Presentation presentation = new Presentation(inputPath))
         {
-            Aspose.Slides.ISlide slide = pres.Slides[index];
-            using (FileStream stream = new FileStream(string.Format(formatString, index + 1), FileMode.Create, FileAccess.Write))
+            int slideNumber = 0;
+            foreach (ISlide slide in presentation.Slides)
             {
-                slide.WriteAsSvg(stream);
-            }
-        }
+                slideNumber++;
+                // Build SVG file name
+                string svgFilePath = Path.Combine(outputDir, $"slide_{slideNumber}.svg");
 
-        // Clean up resources
-        pres.Dispose();
+                // Save each slide as SVG
+                using (FileStream fileStream = new FileStream(svgFilePath, FileMode.Create, FileAccess.Write))
+                {
+                    SVGOptions svgOptions = new SVGOptions();
+                    slide.WriteAsSvg(fileStream, svgOptions);
+                }
+            }
+
+            // Save presentation before exiting (as required)
+            presentation.Save(inputPath, SaveFormat.Pptx);
+        }
     }
 }
