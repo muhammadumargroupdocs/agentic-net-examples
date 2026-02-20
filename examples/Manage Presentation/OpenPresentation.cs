@@ -1,27 +1,35 @@
 using System;
 using Aspose.Slides;
-using Aspose.Slides.Export;
+using System.IO;
 
 class Program
 {
     static void Main()
     {
-        // Path to the password‑protected presentation
-        string inputPath = "protected.pptx";
-        // Path where the presentation will be saved after opening
-        string outputPath = "unprotected.pptx";
+        // Source and destination file paths
+        System.String sourcePath = "source.pptx";
+        System.String copyPath = "copy.pptx";
 
-        // Create load options and set the password required to open the file
-        Aspose.Slides.LoadOptions loadOptions = new Aspose.Slides.LoadOptions();
-        loadOptions.Password = "myPassword";
+        // Load options with BLOB management to keep the source locked
+        Aspose.Slides.LoadOptions loadOptions = new Aspose.Slides.LoadOptions
+        {
+            BlobManagementOptions = new Aspose.Slides.BlobManagementOptions
+            {
+                PresentationLockingBehavior = Aspose.Slides.PresentationLockingBehavior.KeepLocked
+            }
+        };
 
-        // Open the presentation using the load options with the password
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath, loadOptions);
+        // Open the large presentation using the specified load options
+        using (Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(sourcePath, loadOptions))
+        {
+            // Rename the first slide
+            pres.Slides[0].Name = "RenamedSlide";
 
-        // Save the presentation (without password) before exiting
-        presentation.Save(outputPath, SaveFormat.Pptx);
+            // Save a copy of the presentation
+            pres.Save(copyPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        }
 
-        // Release resources
-        presentation.Dispose();
+        // Delete the original source file after processing
+        System.IO.File.Delete(sourcePath);
     }
 }
