@@ -1,6 +1,5 @@
 using System;
 using System.IO;
-using Aspose.Slides;
 
 class Program
 {
@@ -9,23 +8,27 @@ class Program
         // Input presentation path
         string inputPath = "input.pptx";
         // Output directory for extracted videos
-        string outputDir = "output_videos";
-        // Ensure output directory exists
+        string outputDir = "ExtractedVideos";
+
+        // Create output directory if it does not exist
         Directory.CreateDirectory(outputDir);
+
         // Load presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
         try
         {
             int videoIndex = 0;
-            // Iterate through slides and shapes to find video frames
+            // Iterate through slides
             foreach (Aspose.Slides.ISlide slide in presentation.Slides)
             {
+                // Iterate through shapes on the slide
                 foreach (Aspose.Slides.IShape shape in slide.Shapes)
                 {
+                    // Check if the shape is a video frame
                     if (shape is Aspose.Slides.VideoFrame)
                     {
                         Aspose.Slides.IVideoFrame vf = (Aspose.Slides.IVideoFrame)shape;
-                        // Determine video file extension from content type
+                        // Get content type to determine file extension
                         string contentType = vf.EmbeddedVideo.ContentType;
                         int slashPos = contentType.LastIndexOf('/');
                         string extension = contentType.Substring(slashPos + 1);
@@ -50,8 +53,8 @@ class Program
         }
         finally
         {
-            // Save presentation before exiting (optional, as no changes are made)
-            presentation.Save(inputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            // Save presentation before exiting (optional, can save to a new file)
+            presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
             presentation.Dispose();
         }
     }
