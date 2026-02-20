@@ -1,35 +1,32 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Define input and output file paths
-        string inputPath = "input.pptx";
-        string outputPath = "output.pptx";
+        // Paths to source and destination presentations
+        string sourcePath = "source.pptx";
+        string destinationPath = "target.pptx";
 
-        // Load the source presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+        // Load source presentation
+        Aspose.Slides.Presentation srcPres = new Aspose.Slides.Presentation(sourcePath);
+        // Create empty destination presentation
+        Aspose.Slides.Presentation destPres = new Aspose.Slides.Presentation();
 
-        // Get the slide collection
-        Aspose.Slides.ISlideCollection slides = pres.Slides;
+        // Get first slide from source
+        Aspose.Slides.ISlide sourceSlide = srcPres.Slides[0];
+        // Get master slide associated with the source slide
+        Aspose.Slides.IMasterSlide sourceMaster = sourceSlide.LayoutSlide.MasterSlide;
+        // Clone the master slide into destination presentation
+        Aspose.Slides.IMasterSlide destMaster = destPres.Masters.AddClone(sourceMaster);
+        // Clone the source slide into destination using the cloned master
+        destPres.Slides.AddClone(sourceSlide, destMaster, true);
 
-        // Define the range of slides to clone (e.g., slides 0 to 2)
-        int startIndex = 0;
-        int endIndex = 2; // inclusive
+        // Save the destination presentation
+        destPres.Save(destinationPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // Clone each slide in the specified range to the end of the presentation
-        for (int i = startIndex; i <= endIndex; i++)
-        {
-            slides.AddClone(slides[i]);
-        }
-
-        // Save the modified presentation
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Clean up resources
-        pres.Dispose();
+        // Clean up
+        srcPres.Dispose();
+        destPres.Dispose();
     }
 }
