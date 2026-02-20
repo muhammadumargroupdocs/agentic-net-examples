@@ -7,46 +7,37 @@ class Program
 {
     static void Main()
     {
-        // Define data directory
+        // Define directories and file paths
         string dataDir = "Data";
         if (!Directory.Exists(dataDir))
+        {
             Directory.CreateDirectory(dataDir);
-
-        // Define image file name and path
-        string imageFileName = "example.jpg";
-        string imagePath = Path.Combine(dataDir, imageFileName);
+        }
+        string imagePath = Path.Combine(dataDir, "example.jpg");
+        string outputPath = Path.Combine(dataDir, "output.pptx");
 
         // Create a new presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Get the first slide
-        Aspose.Slides.ISlide slide = pres.Slides[0];
-
-        // Load image and add to presentation images collection
+        // Load image from file and add it to the presentation's image collection
         Aspose.Slides.IImage img = Aspose.Slides.Images.FromFile(imagePath);
-        Aspose.Slides.IPPImage imgx = pres.Images.AddImage(img);
+        Aspose.Slides.IPPImage image = presentation.Images.AddImage(img);
 
-        // Add a rectangle auto shape
-        float x = 100f;
-        float y = 100f;
-        float width = 400f;
-        float height = 300f;
-        Aspose.Slides.IAutoShape shape = slide.Shapes.AddAutoShape(Aspose.Slides.ShapeType.Rectangle, x, y, width, height);
+        // Add a picture frame to the first slide with initial size and position
+        Aspose.Slides.IPictureFrame pictureFrame = presentation.Slides[0].Shapes.AddPictureFrame(
+            Aspose.Slides.ShapeType.Rectangle,
+            50,    // X position
+            50,    // Y position
+            400,   // Width
+            300,   // Height
+            image);
 
-        // Set picture fill and stretch offsets
-        shape.FillFormat.FillType = Aspose.Slides.FillType.Picture;
-        shape.FillFormat.PictureFillFormat.PictureFillMode = Aspose.Slides.PictureFillMode.Stretch;
-        shape.FillFormat.PictureFillFormat.Picture.Image = imgx;
-        shape.FillFormat.PictureFillFormat.StretchOffsetLeft = 0.1f;
-        shape.FillFormat.PictureFillFormat.StretchOffsetRight = 0.1f;
-        shape.FillFormat.PictureFillFormat.StretchOffsetTop = 0.1f;
-        shape.FillFormat.PictureFillFormat.StretchOffsetBottom = 0.1f;
+        // Set relative scaling for the picture frame (50% of original size)
+        pictureFrame.RelativeScaleHeight = 0.5f;
+        pictureFrame.RelativeScaleWidth = 0.5f;
 
-        // Save the presentation
-        string outPath = Path.Combine(dataDir, "output.pptx");
-        pres.Save(outPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Dispose the presentation
-        pres.Dispose();
+        // Save the presentation to PPTX format
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Dispose();
     }
 }
