@@ -3,22 +3,34 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ExportSlideToPdf
 {
-    static void Main()
+    class Program
     {
-        // Input PPTX file path
-        string inputPath = Path.Combine(Environment.CurrentDirectory, "input.pptx");
-        // Output PDF file path
-        string outputPath = Path.Combine(Environment.CurrentDirectory, "output.pdf");
+        static void Main(string[] args)
+        {
+            // Define output directory
+            string outputDir = Path.Combine(Environment.CurrentDirectory, "Output");
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
 
-        // Load the presentation from the PPTX file
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // Path to the source PPTX file
+            string sourcePath = Path.Combine(Environment.CurrentDirectory, "sample.pptx");
 
-        // Export the presentation (or a specific slide) to PDF format
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
+            // Path for the resulting PDF file
+            string outputPath = Path.Combine(outputDir, "slide.pdf");
 
-        // Release resources
-        presentation.Dispose();
+            // Load the presentation
+            Presentation presentation = new Presentation(sourcePath);
+
+            // Create PDF export options (optional, can be customized)
+            PdfOptions pdfOptions = new PdfOptions();
+
+            // Save the presentation (or specific slide) as PDF
+            presentation.Save(outputPath, SaveFormat.Pdf, pdfOptions);
+
+            // Dispose the presentation object
+            presentation.Dispose();
+        }
     }
 }
