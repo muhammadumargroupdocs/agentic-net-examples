@@ -1,39 +1,41 @@
 using System;
 using Aspose.Slides;
+using Aspose.Slides.Export;
 using System.Drawing;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
         // Create a new presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
 
-        // Add a rectangle shape that will be converted to a custom geometry shape
-        Aspose.Slides.GeometryShape shape = (Aspose.Slides.GeometryShape)presentation.Slides[0].Shapes.AddAutoShape(Aspose.Slides.ShapeType.Rectangle, 100, 100, 200, 200);
+        // Add a rectangle auto shape to serve as the base for custom geometry
+        Aspose.Slides.GeometryShape shape = (Aspose.Slides.GeometryShape)pres.Slides[0].Shapes.AddAutoShape(
+            Aspose.Slides.ShapeType.Rectangle, 100, 100, 200, 200);
 
         // Retrieve the first geometry path of the shape
         Aspose.Slides.IGeometryPath geometryPath = shape.GetGeometryPaths()[0];
 
-        // Define custom geometry (a simple triangle)
-        geometryPath.MoveTo(0, 0);
-        geometryPath.LineTo(shape.Width, 0);
-        geometryPath.LineTo(shape.Width / 2, shape.Height);
-        geometryPath.CloseFigure();
+        // Add custom line segments to the geometry path
+        geometryPath.LineTo(300, 100, 0);
+        geometryPath.LineTo(300, 300, 0);
 
-        // Apply the custom geometry to the shape
+        // Apply the modified geometry path back to the shape
         shape.SetGeometryPath(geometryPath);
 
-        // Apply solid fill (blue) to the shape
-        shape.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-        shape.FillFormat.SolidFillColor.Color = Color.Blue;
+        // Set a pattern fill for the shape
+        shape.FillFormat.FillType = Aspose.Slides.FillType.Pattern;
+        shape.FillFormat.PatternFormat.PatternStyle = Aspose.Slides.PatternStyle.DiagonalCross;
+        shape.FillFormat.PatternFormat.ForeColor.Color = Color.FromArgb(255, 0, 0); // Red foreground
+        shape.FillFormat.PatternFormat.BackColor.Color = Color.FromArgb(255, 255, 255); // White background
 
-        // Apply solid stroke (red) with a width of 2 points
-        shape.LineFormat.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-        shape.LineFormat.FillFormat.SolidFillColor.Color = Color.Red;
-        shape.LineFormat.Width = 2.0;
+        // Configure the shape's stroke (outline)
+        shape.LineFormat.Width = 5;
+        shape.LineFormat.FillFormat.SolidFillColor.Color = Color.Blue;
 
         // Save the presentation
-        presentation.Save("CustomShape.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        string outPath = "CustomShape.pptx";
+        pres.Save(outPath, Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
