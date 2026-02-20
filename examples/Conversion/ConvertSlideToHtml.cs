@@ -1,19 +1,29 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace AsposeSlidesExample
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Input presentation file path
-        System.String inputPath = "input.pptx";
-        // Output HTML file path
-        System.String outputPath = "output.html";
-
-        // Load the presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        static void Main(string[] args)
         {
-            // Save the presentation as HTML
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html);
+            // Input PowerPoint file path
+            string inputPath = "input.pptx";
+            // Output HTML file path
+            string outputPath = "output.html";
+
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+            // Specify the slide index to convert (0‑based)
+            int[] slides = new int[] { 0 };
+
+            // Save the specified slide as HTML
+            presentation.Save(outputPath, slides, Aspose.Slides.Export.SaveFormat.Html);
+
+            // Clean up resources
+            presentation.Dispose();
         }
     }
 }
