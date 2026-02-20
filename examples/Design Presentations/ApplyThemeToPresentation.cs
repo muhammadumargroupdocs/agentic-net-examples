@@ -1,6 +1,5 @@
 using System;
 using Aspose.Slides;
-using Aspose.Slides.Export;
 
 namespace ThemeApplicationExample
 {
@@ -8,22 +7,23 @@ namespace ThemeApplicationExample
     {
         static void Main(string[] args)
         {
-            // Define paths
-            System.String dataDir = "C:\\Data\\";
-            System.String inputPath = dataDir + "input.pptx";
-            System.String outputPath = dataDir + "output.pptx";
+            // Define file paths
+            string dataDir = @"C:\Data\";
+            string inputPath = dataDir + "input.pptx";
+            string themePath = dataDir + "theme.thmx";
+            string outputPath = dataDir + "output.pptx";
 
-            // Load existing presentation
+            // Load the presentation
             Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-            // Apply a built‑in theme by setting the master theme name
-            // (e.g., "Office" is a built‑in theme name)
-            presentation.MasterTheme.Name = "Office";
+            // Apply external theme to the first master slide
+            Aspose.Slides.IMasterSlide masterSlide = presentation.Masters[0];
+            masterSlide.ApplyExternalThemeToDependingSlides(themePath);
 
             // Save the modified presentation
             presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
-            // Dispose the presentation object
+            // Clean up
             presentation.Dispose();
         }
     }
