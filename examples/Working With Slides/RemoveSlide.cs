@@ -1,26 +1,22 @@
 using System;
 using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Define the folder where the presentation files are located
-        string dataDir = "C:\\Presentations\\";
-        // Input presentation file name
-        string inputFile = "input.pptx";
-        // Output presentation file name
-        string outputFile = "output.pptx";
+        // Input and output file paths
+        System.String inputPath = "input.pptx";
+        System.String outputPath = "output.pptx";
 
         // Load the presentation
-        Presentation presentation = new Presentation(dataDir + inputFile);
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Remove the slide at index 0 (first slide)
+        // Remove the first slide (index 0)
         presentation.Slides.RemoveAt(0);
 
         // Save the modified presentation
-        presentation.Save(dataDir + outputFile, SaveFormat.Pptx);
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
         // Clean up resources
         presentation.Dispose();
