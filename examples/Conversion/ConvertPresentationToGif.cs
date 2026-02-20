@@ -1,29 +1,30 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
+using System.Drawing;
 
-namespace SlidesGifConversion
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
-        {
-            // Input presentation file path (PPT or PPTX)
-            System.String inputPath = "example.pptx";
-            // Output GIF file path
-            System.String outputPath = "example.gif";
+        // Path to the source PowerPoint file
+        System.String inputPath = "input.pptx";
+        // Path where the GIF will be saved
+        System.String outputPath = "output.gif";
 
-            // Load the presentation
-            Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+        // Load the presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-            // Create GIF export options
-            Aspose.Slides.Export.GifOptions gifOptions = new Aspose.Slides.Export.GifOptions();
-            // Example: set default delay between frames (in milliseconds)
-            gifOptions.DefaultDelay = 500;
+        // Configure GIF export options
+        Aspose.Slides.Export.GifOptions gifOptions = new Aspose.Slides.Export.GifOptions();
+        gifOptions.FrameSize = new System.Drawing.Size(800, 600);
+        gifOptions.DefaultDelay = 500; // delay in milliseconds
+        gifOptions.TransitionFps = 25;
 
-            // Save the presentation as an animated GIF
-            pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Gif, gifOptions);
+        // Save the presentation as an animated GIF
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Gif, gifOptions);
 
-            // Dispose the presentation object
-            pres.Dispose();
-        }
+        // Release resources
+        presentation.Dispose();
     }
 }
