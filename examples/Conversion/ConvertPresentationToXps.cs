@@ -6,18 +6,23 @@ class Program
 {
     static void Main()
     {
-        // Path to the source presentation
+        // Input and output file paths
         string inputPath = "input.pptx";
-        // Path for the output XPS file
         string outputPath = "output.xps";
 
-        // Load the presentation from the file
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+        // Load the presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Save the presentation to XPS format using default settings
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Xps);
+        // Create XPS options with custom settings
+        Aspose.Slides.Export.XpsOptions xpsOptions = new Aspose.Slides.Export.XpsOptions();
+        xpsOptions.DrawSlidesFrame = true;          // Draw a frame around each slide
+        xpsOptions.ShowHiddenSlides = true;         // Include hidden slides
+        xpsOptions.SaveMetafilesAsPng = true;       // Convert metafiles to PNG
 
-        // Release resources
-        pres.Dispose();
+        // Save the presentation to XPS using the custom options
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Xps, xpsOptions);
+
+        // Dispose the presentation object
+        presentation.Dispose();
     }
 }
