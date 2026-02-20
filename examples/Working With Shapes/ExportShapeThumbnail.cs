@@ -1,29 +1,33 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
+        // Scale factors for thumbnail generation
+        int scaleX = 2;
+        int scaleY = scaleX;
+
         // Path to the source presentation
-        string inputPath = "input.pptx";
-        // Path for the exported PNG thumbnail
-        string outputImagePath = "slide1.png";
+        System.String inputPath = "input.pptx";
 
         // Load the presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Get the first slide
-        Aspose.Slides.ISlide slide = presentation.Slides[0];
-
-        // Export the slide thumbnail as PNG
-        using (Aspose.Slides.IImage thumbnail = slide.GetImage())
+        // Export each slide as a JPEG thumbnail
+        foreach (Aspose.Slides.ISlide slide in presentation.Slides)
         {
-            thumbnail.Save(outputImagePath, Aspose.Slides.ImageFormat.Png);
+            // Get thumbnail image with custom scaling
+            using (Aspose.Slides.IImage thumbnail = slide.GetImage(scaleX, scaleY))
+            {
+                // Build output file name using slide number
+                System.String imageFileName = System.String.Format("slide_{0}.jpg", slide.SlideNumber);
+                // Save thumbnail as JPEG
+                thumbnail.Save(imageFileName, Aspose.Slides.ImageFormat.Jpeg);
+            }
         }
 
-        // Save the presentation before exiting
+        // Save the (unchanged) presentation before exiting
         presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
         presentation.Dispose();
     }
