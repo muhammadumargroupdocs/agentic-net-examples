@@ -4,29 +4,22 @@ class Program
 {
     static void Main()
     {
-        // Paths to source and destination presentations
-        string sourcePath = "source.pptx";
-        string destinationPath = "target.pptx";
+        // Path to the folder containing the presentation
+        string dataDir = "C:\\Data\\";
+        // Input presentation file
+        string inputFile = dataDir + "input.pptx";
+        // Output presentation file
+        string outputFile = "cloned.pptx";
 
-        // Load source presentation
-        Aspose.Slides.Presentation srcPres = new Aspose.Slides.Presentation(sourcePath);
-        // Create empty destination presentation
-        Aspose.Slides.Presentation destPres = new Aspose.Slides.Presentation();
-
-        // Get first slide from source
-        Aspose.Slides.ISlide sourceSlide = srcPres.Slides[0];
-        // Get master slide associated with the source slide
-        Aspose.Slides.IMasterSlide sourceMaster = sourceSlide.LayoutSlide.MasterSlide;
-        // Clone the master slide into destination presentation
-        Aspose.Slides.IMasterSlide destMaster = destPres.Masters.AddClone(sourceMaster);
-        // Clone the source slide into destination using the cloned master
-        destPres.Slides.AddClone(sourceSlide, destMaster, true);
-
-        // Save the destination presentation
-        destPres.Save(destinationPath, Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Clean up
-        srcPres.Dispose();
-        destPres.Dispose();
+        // Load the existing presentation
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputFile);
+        // Get the slide collection
+        Aspose.Slides.ISlideCollection slides = pres.Slides;
+        // Clone the first slide and add it to the end of the collection
+        slides.AddClone(slides[0]);
+        // Save the modified presentation
+        pres.Save(dataDir + outputFile, Aspose.Slides.Export.SaveFormat.Pptx);
+        // Clean up resources
+        pres.Dispose();
     }
 }
