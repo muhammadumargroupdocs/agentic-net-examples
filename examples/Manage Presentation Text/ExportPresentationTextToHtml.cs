@@ -1,10 +1,13 @@
 using System;
+using System.Text;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
+using Aspose.Slides.Util;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
         // Input PPTX file path
         string inputPath = "input.pptx";
@@ -12,15 +15,34 @@ class Program
         string outputPath = "output.html";
 
         // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        Presentation presentation = new Presentation(inputPath);
 
-        // Create HTML export options (optional)
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+        // Options for HTML conversion
+        TextToHtmlConversionOptions htmlOptions = new TextToHtmlConversionOptions();
 
-        // Export the presentation to HTML
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html5, htmlOptions);
+        // StringBuilder to accumulate HTML content
+        StringBuilder htmlBuilder = new StringBuilder();
 
-        // Clean up
+        // Iterate through all slides
+        for (int slideIndex = 0; slideIndex < presentation.Slides.Count; slideIndex++)
+        {
+            // Get all text frames on the current slide
+            ITextFrame[] textFrames = SlideUtil.GetAllTextFrames(presentation, true);
+            foreach (ITextFrame textFrame in textFrames)
+            {
+                // Export paragraphs of the text frame to HTML
+                string htmlFragment = textFrame.Paragraphs.ExportToHtml(0, textFrame.Paragraphs.Count, htmlOptions);
+                htmlBuilder.AppendLine(htmlFragment);
+            }
+        }
+
+        // Write the accumulated HTML to a file
+        File.WriteAllText(outputPath, htmlBuilder.ToString());
+
+        // Save the presentation (as required by authoring rules)
+        presentation.Save(inputPath, SaveFormat.Pptx);
+
+        // Dispose the presentation
         presentation.Dispose();
     }
 }
