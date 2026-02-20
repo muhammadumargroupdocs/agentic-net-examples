@@ -2,31 +2,31 @@ using System;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Input and output file paths
-        string inputPath = "input.pptx";
-        string outputPath = "output.html";
+        // Input PowerPoint file and output HTML file paths
+        System.String inputPath = "sample.pptx";
+        System.String outputPath = "output.html";
 
         // Load the presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Set HTML export options
+        // Create HTML export options
         Aspose.Slides.Export.HtmlOptions htmlOpt = new Aspose.Slides.Export.HtmlOptions();
         // Use a simple document formatter (slides one below another)
-        htmlOpt.HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateDocumentFormatter("document.html", false);
+        htmlOpt.HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateDocumentFormatter("template.html", false);
 
-        // Configure notes layout options (notes at the bottom)
+        // Configure notes layout to include speaker notes at the bottom
         Aspose.Slides.Export.NotesCommentsLayoutingOptions notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
         notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
 
-        // Apply notes layout options to HTML export
+        // Assign the notes layout options to the HTML options
         htmlOpt.SlidesLayoutOptions = notesOptions;
 
-        // Save the presentation as HTML with speaker notes
+        // Save the presentation as HTML with notes
         presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOpt);
 
-        // Dispose the presentation object
+        // Clean up
         presentation.Dispose();
     }
 }
