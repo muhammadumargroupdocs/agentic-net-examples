@@ -19,33 +19,33 @@ class Program
         // Define row heights
         double[] rows = new double[] { 50, 50, 50, 50 };
 
-        // Add a table to the slide
+        // Add a table to the slide at position (50,50)
         Aspose.Slides.ITable table = slide.Shapes.AddTable(50, 50, cols, rows);
 
-        // Set borders for each cell
-        foreach (Aspose.Slides.IRow rowItem in table.Rows)
+        // Apply solid black borders to each cell
+        foreach (Aspose.Slides.IRow row in table.Rows)
         {
-            foreach (Aspose.Slides.ICell cell in rowItem)
+            foreach (Aspose.Slides.ICell cell in row)
             {
                 cell.CellFormat.BorderTop.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-                cell.CellFormat.BorderTop.FillFormat.SolidFillColor.Color = System.Drawing.Color.Black;
+                cell.CellFormat.BorderTop.FillFormat.SolidFillColor.Color = Color.Black;
                 cell.CellFormat.BorderTop.Width = 1;
 
                 cell.CellFormat.BorderBottom.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-                cell.CellFormat.BorderBottom.FillFormat.SolidFillColor.Color = System.Drawing.Color.Black;
+                cell.CellFormat.BorderBottom.FillFormat.SolidFillColor.Color = Color.Black;
                 cell.CellFormat.BorderBottom.Width = 1;
 
                 cell.CellFormat.BorderLeft.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-                cell.CellFormat.BorderLeft.FillFormat.SolidFillColor.Color = System.Drawing.Color.Black;
+                cell.CellFormat.BorderLeft.FillFormat.SolidFillColor.Color = Color.Black;
                 cell.CellFormat.BorderLeft.Width = 1;
 
                 cell.CellFormat.BorderRight.FillFormat.FillType = Aspose.Slides.FillType.Solid;
-                cell.CellFormat.BorderRight.FillFormat.SolidFillColor.Color = System.Drawing.Color.Black;
+                cell.CellFormat.BorderRight.FillFormat.SolidFillColor.Color = Color.Black;
                 cell.CellFormat.BorderRight.Width = 1;
             }
         }
 
         // Save the presentation
-        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Save("TableExample.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
