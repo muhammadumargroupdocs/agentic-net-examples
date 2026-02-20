@@ -1,30 +1,37 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace ManagePresentationProperties
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Define input and output file paths
-        System.String inputPath = "input.pptx";
-        System.String outputPath = "output.pptx";
+        static void Main(string[] args)
+        {
+            // Define the directory containing the presentation files
+            string dataDir = @"C:\Data\";
+            // Input presentation (can be any supported format)
+            string inputPath = dataDir + "input.pptx";
+            // Output presentation saved in PPT format
+            string outputPath = dataDir + "output.ppt";
 
-        // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Access document properties
-        Aspose.Slides.IDocumentProperties documentProperties = presentation.DocumentProperties;
+            // Access the document properties
+            Aspose.Slides.IDocumentProperties documentProperties = presentation.DocumentProperties;
 
-        // Modify built‑in properties
-        documentProperties.Author = "John Doe";
-        documentProperties.Title = "Sample Presentation";
-        documentProperties.Subject = "Demo";
-        documentProperties.Comments = "Created with Aspose.Slides";
-        documentProperties.Manager = "Jane Smith";
+            // Set built‑in properties
+            documentProperties.Author = "John Doe";
+            documentProperties.Title = "Sample Presentation Title";
+            documentProperties.Subject = "Sample Subject";
+            documentProperties.Comments = "Created with Aspose.Slides";
 
-        // Save the updated presentation
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            // Save the presentation in PPT format
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Ppt);
 
-        // Clean up resources
-        presentation.Dispose();
+            // Clean up
+            presentation.Dispose();
+        }
     }
 }
