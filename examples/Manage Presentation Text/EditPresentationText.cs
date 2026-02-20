@@ -1,65 +1,62 @@
 using System;
-using System.Collections.Generic;
-using Aspose.Slides;
+using System.IO;
+using System.Drawing;
 using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Input and output file paths
-        System.String inputPath = "input.pptx";
-        System.String outputPath = "output.pptx";
+        // Output directory
+        string outDir = "Output";
+        if (!Directory.Exists(outDir))
+            Directory.CreateDirectory(outDir);
 
-        // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+        // Create a new presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Create a callback to capture replace results
-        FindResultCallback callback = new FindResultCallback();
+        // Get the first slide
+        Aspose.Slides.ISlide slide = presentation.Slides[0];
 
-        // Replace text in the presentation
-        presentation.ReplaceText("old text", "new text", new Aspose.Slides.TextSearchOptions(), callback);
+        // Add a rectangle shape to hold the text
+        Aspose.Slides.IAutoShape autoShape = slide.Shapes.AddAutoShape(
+            Aspose.Slides.ShapeType.Rectangle, 50, 50, 500, 300);
 
-        // Save the presentation after replacement
-        foreach (WordInfo info in callback.Words)
-        {
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
-        }
+        // Get the text frame of the shape
+        Aspose.Slides.ITextFrame textFrame = autoShape.TextFrame;
+
+        // Remove the default empty paragraph
+        textFrame.Paragraphs.RemoveAt(0);
+
+        // First bullet point
+        Aspose.Slides.Paragraph para1 = new Aspose.Slides.Paragraph();
+        para1.ParagraphFormat.Bullet.Type = Aspose.Slides.BulletType.Symbol;
+        para1.ParagraphFormat.Bullet.Char = Convert.ToChar(8226); // •
+        para1.Text = "Clarity";
+        para1.ParagraphFormat.Indent = 20;
+        textFrame.Paragraphs.Add(para1);
+
+        // Second bullet point
+        Aspose.Slides.Paragraph para2 = new Aspose.Slides.Paragraph();
+        para2.ParagraphFormat.Bullet.Type = Aspose.Slides.BulletType.Symbol;
+        para2.ParagraphFormat.Bullet.Char = Convert.ToChar(8226); // •
+        para2.Text = "Organization";
+        para2.ParagraphFormat.Indent = 20;
+        textFrame.Paragraphs.Add(para2);
+
+        // Third bullet point
+        Aspose.Slides.Paragraph para3 = new Aspose.Slides.Paragraph();
+        para3.ParagraphFormat.Bullet.Type = Aspose.Slides.BulletType.Symbol;
+        para3.ParagraphFormat.Bullet.Char = Convert.ToChar(8226); // •
+        para3.Text = "Emphasis";
+        para3.ParagraphFormat.Indent = 20;
+        textFrame.Paragraphs.Add(para3);
+
+        // Save the presentation as PPTX
+        string outputPath = Path.Combine(outDir, "BulletList.pptx");
+        presentation.Save(outputPath, SaveFormat.Pptx);
 
         // Dispose the presentation
         presentation.Dispose();
-    }
-}
-
-// Callback class to collect replace results
-public class FindResultCallback : Aspose.Slides.IFindResultCallback
-{
-    public readonly System.Collections.Generic.List<WordInfo> Words = new System.Collections.Generic.List<WordInfo>();
-
-    public System.Int32 Count
-    {
-        get { return Words.Count; }
-    }
-
-    public void FoundResult(Aspose.Slides.ITextFrame textFrame, System.String oldText, System.String foundText, System.Int32 textPosition)
-    {
-        Words.Add(new WordInfo(textFrame, oldText, foundText, textPosition));
-    }
-}
-
-// Class representing information about a found word
-public class WordInfo
-{
-    public Aspose.Slides.ITextFrame TextFrame { get; }
-    public System.String SourceText { get; }
-    public System.String FoundText { get; }
-    public System.Int32 TextPosition { get; }
-
-    internal WordInfo(Aspose.Slides.ITextFrame textFrame, System.String sourceText, System.String foundText, System.Int32 textPosition)
-    {
-        TextFrame = textFrame;
-        SourceText = sourceText;
-        FoundText = foundText;
-        TextPosition = textPosition;
     }
 }
