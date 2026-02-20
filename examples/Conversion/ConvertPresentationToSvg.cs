@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
@@ -8,18 +9,30 @@ class Program
     {
         // Path to the source PowerPoint file
         string inputPath = "input.pptx";
-        // Path where the SVG output (as HTML with SVG images) will be saved
-        string outputPath = "output.html";
+
+        // Directory where SVG files will be saved
+        string outputDirectory = "output_svg";
+
+        // Create the output directory if it does not exist
+        Directory.CreateDirectory(outputDirectory);
 
         // Load the presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
-        {
-            // Configure HTML export options to use SVG for slide images
-            Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
-            htmlOptions.SlideImageFormat = Aspose.Slides.Export.SlideImageFormat.Svg(new Aspose.Slides.Export.SVGOptions());
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-            // Save the presentation as HTML; each slide will be rendered as an SVG image
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+        // Export each slide as an individual SVG file
+        for (int index = 0; index < presentation.Slides.Count; index++)
+        {
+            Aspose.Slides.ISlide slide = presentation.Slides[index];
+            string svgFilePath = Path.Combine(outputDirectory, $"slide_{index + 1}.svg");
+
+            using (FileStream fileStream = new FileStream(svgFilePath, FileMode.Create))
+            {
+                slide.WriteAsSvg(fileStream);
+            }
         }
+
+        // Save the (unchanged) presentation before exiting
+        presentation.Save("converted.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Dispose();
     }
 }
