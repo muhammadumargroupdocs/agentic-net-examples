@@ -3,36 +3,37 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ManageAudioThumbnail
 {
-    static void Main()
+    class Program
     {
-        // Define file paths
-        string mediaFileName = "audio.mp3";
-        string mediaFile = Path.Combine(Environment.CurrentDirectory, mediaFileName);
-        string thumbnailFileName = "thumb.jpg";
-        string thumbnailFile = Path.Combine(Environment.CurrentDirectory, thumbnailFileName);
-        string outputPath = Path.Combine(Environment.CurrentDirectory, "output.pptx");
+        static void Main(string[] args)
+        {
+            // Paths for media, thumbnail image and output presentation
+            string mediaFilePath = Path.Combine(Environment.CurrentDirectory, "audio.mp3");
+            string thumbnailFilePath = Path.Combine(Environment.CurrentDirectory, "thumb.jpg");
+            string outputPath = Path.Combine(Environment.CurrentDirectory, "output.pptx");
 
-        // Create a new presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+            // Create a new presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Add audio to the presentation
-        Aspose.Slides.IAudio audio = pres.Audios.AddAudio(File.ReadAllBytes(mediaFile));
+            // Add audio to the presentation
+            Aspose.Slides.IAudio audio = presentation.Audios.AddAudio(File.ReadAllBytes(mediaFilePath));
 
-        // Add an embedded audio frame to the first slide
-        Aspose.Slides.IAudioFrame audioFrame = pres.Slides[0].Shapes.AddAudioFrameEmbedded(10, 10, 50, 50, audio);
+            // Add an audio frame to the first slide
+            Aspose.Slides.IAudioFrame audioFrame = presentation.Slides[0].Shapes.AddAudioFrameEmbedded(10, 10, 50, 50, audio);
 
-        // Load thumbnail image data
-        byte[] imageData = File.ReadAllBytes(thumbnailFile);
+            // Load new thumbnail image data
+            byte[] thumbnailData = File.ReadAllBytes(thumbnailFilePath);
 
-        // Set the thumbnail image for the audio frame
-        audioFrame.PictureFormat.Picture.Image = pres.Images.AddImage(imageData);
+            // Set the audio frame's picture (thumbnail) to the new image
+            audioFrame.PictureFormat.Picture.Image = presentation.Images.AddImage(thumbnailData);
 
-        // Save the presentation
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+            // Save the presentation
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // Clean up
-        pres.Dispose();
+            // Dispose the presentation
+            presentation.Dispose();
+        }
     }
 }
