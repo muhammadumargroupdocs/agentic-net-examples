@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
@@ -6,22 +7,21 @@ class Program
 {
     static void Main()
     {
-        // Input and output file paths
+        // Define input and output file paths
         string inputPath = "input.pptx";
         string outputPath = "output.tiff";
 
         // Load the presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Configure TIFF options for black-and-white conversion
-        Aspose.Slides.Export.TiffOptions options = new Aspose.Slides.Export.TiffOptions();
-        options.CompressionType = Aspose.Slides.Export.TiffCompressionTypes.CCITT4;
-        options.BwConversionMode = Aspose.Slides.Export.BlackWhiteConversionMode.Dithering;
+        // Create TIFF options and set a custom image size
+        Aspose.Slides.Export.TiffOptions tiffOptions = new Aspose.Slides.Export.TiffOptions();
+        tiffOptions.ImageSize = new System.Drawing.Size(1600, 1200); // custom size in pixels
 
-        // Save the presentation as a black-and-white TIFF image
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Tiff, options);
+        // Save the presentation as a multi-page TIFF using the specified options
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Tiff, tiffOptions);
 
-        // Dispose the presentation object
-        pres.Dispose();
+        // Clean up resources
+        presentation.Dispose();
     }
 }
