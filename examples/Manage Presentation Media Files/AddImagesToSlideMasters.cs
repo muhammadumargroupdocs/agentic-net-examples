@@ -1,32 +1,37 @@
 using System;
 using System.IO;
-using Aspose.Slides;
 using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Define file paths
-        string inputImagePath = "image.png";
-        string outputPath = "output.pptx";
+        // Output directory
+        string outDir = "Output";
+        if (!Directory.Exists(outDir))
+            Directory.CreateDirectory(outDir);
 
         // Create a new presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Load image data
-        byte[] imageData = System.IO.File.ReadAllBytes(inputImagePath);
-
-        // Add image to presentation's image collection
-        Aspose.Slides.IPPImage img = pres.Images.AddImage(imageData);
+        // Load image file
+        string imagePath = "heading.png";
+        Aspose.Slides.IImage image = Aspose.Slides.Images.FromFile(imagePath);
+        Aspose.Slides.IPPImage ippImage = presentation.Images.AddImage(image);
 
         // Get the first master slide
-        Aspose.Slides.IMasterSlide master = pres.Masters[0];
+        Aspose.Slides.IMasterSlide masterSlide = presentation.Masters[0];
 
-        // Add picture frame to the master slide covering the whole slide
-        master.Shapes.AddPictureFrame(Aspose.Slides.ShapeType.Rectangle, 0, 0, pres.SlideSize.Size.Width, pres.SlideSize.Size.Height, img);
+        // Add picture frame to the master slide (heading)
+        float x = 0;
+        float y = 0;
+        float width = 500;
+        float height = 100;
+        masterSlide.Shapes.AddPictureFrame(Aspose.Slides.ShapeType.Rectangle, x, y, width, height, ippImage);
 
         // Save the presentation
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        string outPath = Path.Combine(outDir, "MasterWithImage.pptx");
+        presentation.Save(outPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        presentation.Dispose();
     }
 }
