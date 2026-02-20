@@ -5,30 +5,27 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Define file paths
-        System.String pdfPath = "input.pdf";
-        System.String pdfOutputPath = "output_from_pdf.pptx";
-        System.String htmlPath = "input.html";
-        System.String htmlOutputPath = "output_from_html.pptx";
+        // Path to the HTML file
+        string htmlPath = "input.html";
+        // Path to save the generated PowerPoint file
+        string outputPath = "output.pptx";
 
         // Create a new presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation();
 
-        // Import slides from PDF
-        pres.Slides.AddFromPdf(pdfPath);
-        pres.Save(pdfOutputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        // Open the HTML file as a stream
+        System.IO.Stream htmlStream = System.IO.File.OpenRead(htmlPath);
 
-        // Prepare HTML stream
-        System.IO.FileStream htmlStream = new System.IO.FileStream(htmlPath, System.IO.FileMode.Open, System.IO.FileAccess.Read);
+        // Insert slides from HTML at the beginning of the presentation
+        presentation.Slides.InsertFromHtml(0, htmlStream, true);
 
-        // Insert slides from HTML at the beginning
-        pres.Slides.InsertFromHtml(0, htmlStream, true);
-        pres.Save(htmlOutputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        // Save the presentation
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // Clean up
+        // Clean up resources
         htmlStream.Close();
-        pres.Dispose();
+        presentation.Dispose();
     }
 }
