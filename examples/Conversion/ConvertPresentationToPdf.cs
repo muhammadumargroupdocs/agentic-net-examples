@@ -6,17 +6,20 @@ class Program
 {
     static void Main()
     {
-        // Path to the source PowerPoint file
+        // Input PowerPoint file
         string inputPath = "input.pptx";
-
-        // Path where the PDF will be saved
+        // Output PDF file
         string outputPath = "output.pdf";
 
         // Load the presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
+        Presentation pres = new Presentation(inputPath);
 
-        // Save the presentation as PDF using the rule for saving without additional options
-        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
+        // Create PDF options and set custom properties
+        PdfOptions pdfOptions = new PdfOptions();
+        pdfOptions.ShowHiddenSlides = true; // include hidden slides in the PDF
+
+        // Save the presentation as PDF with the specified options
+        pres.Save(outputPath, SaveFormat.Pdf, pdfOptions);
 
         // Dispose the presentation object
         pres.Dispose();
