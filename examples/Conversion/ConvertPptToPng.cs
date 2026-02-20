@@ -1,44 +1,44 @@
 using System;
 using System.IO;
-using System.Drawing.Imaging;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ConvertPptToPng
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Input PPT/PPTX file path
-        string inputPath = "example.pptx";
-
-        // Output folder for PNG images
-        string outputFolder = "output";
-        Directory.CreateDirectory(outputFolder);
-
-        // Load the presentation
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
-
-        // Scale factors for thumbnail generation (1 = original size)
-        int scaleX = 1;
-        int scaleY = 1;
-
-        // Iterate through each slide and save as PNG
-        foreach (Aspose.Slides.ISlide slide in pres.Slides)
+        static void Main(string[] args)
         {
-            // Generate image for the slide
-            Aspose.Slides.IImage thumbnail = slide.GetImage(scaleX, scaleY);
+            // Input PPT/PPTX file path
+            string inputPath = "input.pptx";
 
-            // Build PNG file name using slide number
-            string imageFileName = String.Format(Path.Combine(outputFolder, "slide_{0}.png"), slide.SlideNumber);
+            // Output folder for PNG images
+            string outputFolder = "output";
+            Directory.CreateDirectory(outputFolder);
 
-            // Save the image as PNG
-            thumbnail.Save(imageFileName, ImageFormat.Png);
+            // Load the presentation
+            Presentation presentation = new Presentation(inputPath);
+
+            // Scale factors for image conversion
+            int scaleX = 2;
+            int scaleY = scaleX;
+
+            // Iterate through each slide and save as PNG
+            foreach (ISlide slide in presentation.Slides)
+            {
+                using (IImage image = slide.GetImage(scaleX, scaleY))
+                {
+                    string imagePath = String.Format("{0}{1}Slide_{2}.png", outputFolder, Path.DirectorySeparatorChar, slide.SlideNumber);
+                    image.Save(imagePath, ImageFormat.Png);
+                }
+            }
+
+            // Save the presentation (required before exit)
+            string savedPresentationPath = "output.pptx";
+            presentation.Save(savedPresentationPath, SaveFormat.Pptx);
+
+            // Clean up
+            presentation.Dispose();
         }
-
-        // Save the presentation before exiting (optional, can be same or different format)
-        pres.Save("converted_output.pptx", SaveFormat.Pptx);
-
-        // Dispose the presentation object
-        pres.Dispose();
     }
 }
