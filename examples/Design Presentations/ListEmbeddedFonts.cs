@@ -1,29 +1,53 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Path to the source presentation
-        string inputPath = "input.pptx";
-        // Path where the presentation will be saved after listing fonts
-        string outputPath = "output.pptx";
+        // Input and output file paths
+        System.String inputPath = "input.pptx";
+        System.String outputPath = "output.pptx";
 
         // Load the presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Retrieve embedded fonts
+        // Retrieve all fonts used in the presentation
+        Aspose.Slides.IFontData[] allFonts = presentation.FontsManager.GetFonts();
+
+        // Retrieve fonts that are already embedded
         Aspose.Slides.IFontData[] embeddedFonts = presentation.FontsManager.GetEmbeddedFonts();
 
-        // List embedded font names
+        // List embedded fonts
         Console.WriteLine("Embedded fonts in the presentation:");
-        foreach (Aspose.Slides.IFontData font in embeddedFonts)
+        foreach (Aspose.Slides.IFontData ef in embeddedFonts)
         {
-            Console.WriteLine(font.FontName);
+            Console.WriteLine("- " + ef.FontName);
+        }
+
+        // Embed missing fonts (optional demonstration)
+        foreach (Aspose.Slides.IFontData font in allFonts)
+        {
+            bool isEmbedded = false;
+            foreach (Aspose.Slides.IFontData ef in embeddedFonts)
+            {
+                if (ef.Equals(font))
+                {
+                    isEmbedded = true;
+                    break;
+                }
+            }
+            if (!isEmbedded)
+            {
+                presentation.FontsManager.AddEmbeddedFont(font, Aspose.Slides.Export.EmbedFontCharacters.All);
+            }
         }
 
         // Save the presentation before exiting
         presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
+
+        // Dispose the presentation object
         presentation.Dispose();
     }
 }
