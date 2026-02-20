@@ -6,14 +6,30 @@ class Program
 {
     static void Main()
     {
-        // Create a presentation (load from an existing file or use a blank one)
-        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation("input.pptx");
-        // Configure HTML export options with Arial as the default regular font
+        // Create a new presentation
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
+
+        // Set default regular font for HTML export
         Aspose.Slides.Export.HtmlOptions htmlOpts = new Aspose.Slides.Export.HtmlOptions();
         htmlOpts.DefaultRegularFont = "Arial";
-        // Save the presentation as HTML using the configured options
-        pres.Save("output.html", Aspose.Slides.Export.SaveFormat.Html, htmlOpts);
-        // Clean up resources
+
+        // Save as HTML with Arial default font
+        pres.Save("output_arial.html", Aspose.Slides.Export.SaveFormat.Html, htmlOpts);
+
+        // Change default regular font to Lucida Sans
+        htmlOpts.DefaultRegularFont = "Lucida Sans";
+
+        // Save as HTML with Lucida default font
+        pres.Save("output_lucida.html", Aspose.Slides.Export.SaveFormat.Html, htmlOpts);
+
+        // Set default regular font for PDF export
+        Aspose.Slides.Export.PdfOptions pdfOpts = new Aspose.Slides.Export.PdfOptions();
+        pdfOpts.DefaultRegularFont = "Arial";
+
+        // Save as PDF with Arial default font
+        pres.Save("output_arial.pdf", Aspose.Slides.Export.SaveFormat.Pdf, pdfOpts);
+
+        // Dispose the presentation
         pres.Dispose();
     }
 }
