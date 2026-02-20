@@ -1,25 +1,30 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Path to the folder containing the presentation
-        string dataDir = "C:\\Data\\";
-        // Input presentation file
+        // Define file paths
+        string dataDir = "Data/";
         string inputFile = dataDir + "input.pptx";
-        // Output presentation file
-        string outputFile = "cloned.pptx";
+        string outputFile = dataDir + "output.pptx";
 
-        // Load the existing presentation
+        // Load the presentation
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputFile);
+
         // Get the slide collection
         Aspose.Slides.ISlideCollection slides = pres.Slides;
-        // Clone the first slide and add it to the end of the collection
+
+        // Clone first two slides to the end of the presentation
         slides.AddClone(slides[0]);
+        slides.AddClone(slides[1]);
+
         // Save the modified presentation
-        pres.Save(dataDir + outputFile, Aspose.Slides.Export.SaveFormat.Pptx);
-        // Clean up resources
+        pres.Save(outputFile, Aspose.Slides.Export.SaveFormat.Pptx);
+
+        // Dispose the presentation
         pres.Dispose();
     }
 }
