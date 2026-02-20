@@ -1,52 +1,39 @@
 using System;
 using System.IO;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Set up data directory
+        // Define data directory and ensure it exists
         string dataDir = "Data";
         if (!Directory.Exists(dataDir))
             Directory.CreateDirectory(dataDir);
 
-        // Path to the source image
+        // Define input image path and output presentation path
         string imagePath = Path.Combine(dataDir, "example.jpg");
+        string outputPath = Path.Combine(dataDir, "output.pptx");
 
         // Create a new presentation
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
 
-        // Get the first slide
-        Aspose.Slides.ISlide slide = pres.Slides[0];
-
-        // Load the image from file
+        // Load image from file
         Aspose.Slides.IImage img = Aspose.Slides.Images.FromFile(imagePath);
 
-        // Add the image to the presentation's image collection
+        // Add image to presentation's image collection
         Aspose.Slides.IPPImage imgx = pres.Images.AddImage(img);
 
-        // Define picture frame position (top-left corner)
-        float x = 0f;
-        float y = 0f;
-
-        // Use the image's original width and height for the picture frame
-        float width = imgx.Width;
-        float height = imgx.Height;
-
-        // Add picture frame to the slide using the image dimensions
-        Aspose.Slides.IPictureFrame pictureFrame = slide.Shapes.AddPictureFrame(
+        // Add picture frame using image's width and height
+        Aspose.Slides.IPictureFrame pictureFrame = pres.Slides[0].Shapes.AddPictureFrame(
             Aspose.Slides.ShapeType.Rectangle,
-            x,
-            y,
-            width,
-            height,
+            0, // X position
+            0, // Y position
+            imgx.Width,
+            imgx.Height,
             imgx);
 
         // Save the presentation
-        string outPath = Path.Combine(dataDir, "output.pptx");
-        pres.Save(outPath, Aspose.Slides.Export.SaveFormat.Pptx);
+        pres.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx);
 
         // Dispose the presentation
         pres.Dispose();
