@@ -1,19 +1,17 @@
 using System;
-using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Input EMZ image file path
-        string inputFilePath = Path.Combine(Environment.CurrentDirectory, "image.emz");
-        // Output PPTX file path
-        string outputFilePath = Path.Combine(Environment.CurrentDirectory, "output.pptx");
+        // Input and output file paths
+        string inputFilePath = "image.emz";
+        string outputFilePath = "result.pptx";
 
         // Read image data into a byte array
-        byte[] imageData = File.ReadAllBytes(inputFilePath);
+        byte[] imageData = System.IO.File.ReadAllBytes(inputFilePath);
 
         // Create a new presentation
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation();
@@ -32,10 +30,10 @@ class Program
             slide = pres.Slides.AddEmptySlide(pres.LayoutSlides.GetByType(Aspose.Slides.SlideLayoutType.Blank));
         }
 
-        // Add a picture frame that covers the entire slide
+        // Add a picture frame that fills the entire slide using the added image
         slide.Shapes.AddPictureFrame(Aspose.Slides.ShapeType.Rectangle, 0, 0, pres.SlideSize.Size.Width, pres.SlideSize.Size.Height, img);
 
-        // Save the presentation as PPTX
+        // Save the presentation
         pres.Save(outputFilePath, Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
