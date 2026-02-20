@@ -5,45 +5,27 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Determine input PPTX path
-        string inputPath;
-        if (args.Length > 0 && !String.IsNullOrEmpty(args[0]))
-        {
-            inputPath = args[0];
-        }
-        else
-        {
-            inputPath = "sample.pptx"; // fallback path
-        }
+        // Path to the source PPTX file
+        string srcFile = "input.pptx";
+        // Path to save the (unchanged) presentation before exiting
+        string destFile = "output.pptx";
 
-        // Prepare output directory for SVG files
-        string directory = Path.GetDirectoryName(inputPath);
-        string filenameWithoutExt = Path.GetFileNameWithoutExtension(inputPath);
-        string outputDir = Path.Combine(directory ?? String.Empty, filenameWithoutExt + "_svg");
-        Directory.CreateDirectory(outputDir);
+        // Load the presentation
+        Presentation pres = new Presentation(srcFile);
 
-        // Load presentation
-        using (Presentation presentation = new Presentation(inputPath))
+        // Export each slide to an individual SVG file
+        for (int i = 0; i < pres.Slides.Count; i++)
         {
-            int slideNumber = 0;
-            foreach (ISlide slide in presentation.Slides)
+            string svgPath = $"slide_{i + 1}.svg";
+            using (FileStream fs = new FileStream(svgPath, FileMode.Create))
             {
-                slideNumber++;
-                // Build SVG file name
-                string svgFilePath = Path.Combine(outputDir, $"slide_{slideNumber}.svg");
-
-                // Save each slide as SVG
-                using (FileStream fileStream = new FileStream(svgFilePath, FileMode.Create, FileAccess.Write))
-                {
-                    SVGOptions svgOptions = new SVGOptions();
-                    slide.WriteAsSvg(fileStream, svgOptions);
-                }
+                pres.Slides[i].WriteAsSvg(fs);
             }
-
-            // Save presentation before exiting (as required)
-            presentation.Save(inputPath, SaveFormat.Pptx);
         }
+
+        // Save the presentation before exiting
+        pres.Save(destFile, SaveFormat.Pptx);
     }
 }
