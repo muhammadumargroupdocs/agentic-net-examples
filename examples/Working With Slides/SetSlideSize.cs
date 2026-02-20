@@ -13,10 +13,10 @@ class Program
         // Load the presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Set slide size with explicit dimensions and EnsureFit scaling
-        presentation.SlideSize.SetSize(1024f, 768f, Aspose.Slides.SlideSizeScaleType.EnsureFit);
+        // Set slide size explicitly and ensure content fits
+        presentation.SlideSize.SetSize(960f, 540f, Aspose.Slides.SlideSizeScaleType.EnsureFit);
 
-        // Change slide size to A4 paper with Maximize scaling
+        // Change slide size to A4 paper and maximize content scaling
         presentation.SlideSize.SetSize(Aspose.Slides.SlideSizeType.A4Paper, Aspose.Slides.SlideSizeScaleType.Maximize);
 
         // Save the modified presentation
