@@ -1,24 +1,23 @@
 using System;
-using System.IO;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // List of source presentation files (PPT and PPTX)
-        string[] sourceFiles = new string[] { "sample.ppt", "sample.pptx" };
+        // Load the source PowerPoint presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
 
-        foreach (string sourceFile in sourceFiles)
-        {
-            // Load the presentation using fully-qualified Aspose.Slides type
-            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourceFile))
-            {
-                // Determine output XPS file name
-                string outputFile = Path.ChangeExtension(sourceFile, ".xps");
+        // Convert and save to XPS using default options
+        presentation.Save("output.xps", Aspose.Slides.Export.SaveFormat.Xps);
 
-                // Save the presentation to XPS format
-                presentation.Save(outputFile, Aspose.Slides.Export.SaveFormat.Xps);
-            }
-        }
+        // Convert and save to XPS using custom options (e.g., save metafiles as PNG)
+        Aspose.Slides.Export.XpsOptions options = new Aspose.Slides.Export.XpsOptions();
+        options.SaveMetafilesAsPng = true;
+        presentation.Save("output_custom.xps", Aspose.Slides.Export.SaveFormat.Xps, options);
+
+        // Release resources
+        presentation.Dispose();
     }
 }
