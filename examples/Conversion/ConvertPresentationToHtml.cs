@@ -1,35 +1,38 @@
 using System;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ConvertPresentationToHtml
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Input PowerPoint file
-        string inputPath = "input.pptx";
-        // Output HTML file
-        string outputPath = "output.html";
-
-        // List of fonts to exclude from embedding (empty in this example)
-        string[] fontExcludeList = new string[0];
-
-        // Create a controller that embeds all fonts in WOFF format
-        Aspose.Slides.Export.EmbedAllFontsHtmlController embedController = new Aspose.Slides.Export.EmbedAllFontsHtmlController(fontExcludeList);
-
-        // Configure HTML export options with the custom formatter
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions
+        static void Main(string[] args)
         {
-            HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateCustomFormatter(embedController)
-        };
+            // Define input and output paths
+            string inputPath = Path.Combine("input-folder", "presentation.pptx");
+            string outputPath = Path.Combine("output-folder", "presentation.html");
 
-        // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // Ensure output directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(outputPath));
 
-        // Save the presentation as HTML with embedded fonts
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
 
-        // Release resources
-        presentation.Dispose();
+            // Create HTML export options
+            Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+
+            // Configure SVG export options
+            Aspose.Slides.Export.SVGOptions svgOptions = new Aspose.Slides.Export.SVGOptions();
+
+            // Set slide image format to SVG with the specified options
+            htmlOptions.SlideImageFormat = Aspose.Slides.Export.SlideImageFormat.Svg(svgOptions);
+
+            // Save the presentation as HTML with SVG images
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+
+            // Dispose the presentation
+            presentation.Dispose();
+        }
     }
 }
