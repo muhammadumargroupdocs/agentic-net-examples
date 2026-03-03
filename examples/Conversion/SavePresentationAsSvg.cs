@@ -3,35 +3,34 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-namespace AsposeSlidesSvgExample
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // Load the PowerPoint presentation from a file
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
+
+        // Iterate through each slide in the presentation
+        for (int i = 0; i < presentation.Slides.Count; i++)
         {
-            // Path to the source PowerPoint file
-            string sourcePath = "input.pptx";
+            // Get the current slide
+            Aspose.Slides.ISlide slide = presentation.Slides[i];
 
-            // Load the presentation
-            using (Presentation pres = new Presentation(sourcePath))
+            // Define the output SVG file name
+            string svgPath = $"slide_{i + 1}.svg";
+
+            // Create a file stream for the SVG output
+            using (FileStream svgStream = File.Create(svgPath))
             {
-                // Iterate through all slides and save each as an SVG file
-                for (int i = 0; i < pres.Slides.Count; i++)
-                {
-                    ISlide slide = pres.Slides[i];
-                    string svgFileName = $"slide_{i + 1}.svg";
-
-                    // Create a file stream for the SVG output
-                    using (FileStream svgStream = File.Create(svgFileName))
-                    {
-                        // Write the slide content as SVG
-                        slide.WriteAsSvg(svgStream);
-                    }
-                }
-
-                // Save the presentation (required before exiting)
-                pres.Save("output.pptx", SaveFormat.Pptx);
+                // Save the slide as an SVG file
+                slide.WriteAsSvg(svgStream);
             }
         }
+
+        // Save the (potentially modified) presentation before exiting
+        presentation.Save("output.pptx", SaveFormat.Pptx);
+
+        // Release resources used by the presentation
+        presentation.Dispose();
     }
 }
