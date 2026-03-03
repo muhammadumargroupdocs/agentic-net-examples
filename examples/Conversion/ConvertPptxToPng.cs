@@ -1,34 +1,37 @@
 using System;
 using Aspose.Slides;
+using Aspose.Slides.Export;
+using System.IO;
 
-namespace ConvertPptxToPng
+class Program
 {
-    class Program
+    static void Main()
     {
-        static void Main(string[] args)
+        // Path to the source PPTX file
+        System.String inputPath = "input.pptx";
+        // Output file name pattern for PNG images
+        System.String outputPattern = "slide_{0}.png";
+
+        // Load the presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+        // Iterate through all slides
+        for (System.Int32 index = 0; index < presentation.Slides.Count; index++)
         {
-            // Path to the source PPTX file
-            System.String inputPath = "input.pptx";
-            // Output file name pattern for each slide image
-            System.String outputFormat = "slide_{0}.png";
+            // Get the current slide
+            Aspose.Slides.ISlide slide = presentation.Slides[index];
 
-            // Load the presentation
-            Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
-
-            // Iterate through all slides and save each as PNG
-            for (int index = 0; index < pres.Slides.Count; index++)
+            // Render the slide to an image
+            using (Aspose.Slides.IImage image = slide.GetImage())
             {
-                Aspose.Slides.ISlide slide = pres.Slides[index];
-                using (Aspose.Slides.IImage image = slide.GetImage())
-                {
-                    System.String outputPath = System.String.Format(outputFormat, index);
-                    image.Save(outputPath, Aspose.Slides.ImageFormat.Png);
-                }
+                // Build the output file name
+                System.String outputPath = System.String.Format(outputPattern, index);
+                // Save the image as PNG
+                image.Save(outputPath, Aspose.Slides.ImageFormat.Png);
             }
-
-            // Save the presentation before exiting (optional, can overwrite original)
-            pres.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
-            pres.Dispose();
         }
+
+        // Save (dispose) the presentation before exiting
+        presentation.Dispose();
     }
 }
