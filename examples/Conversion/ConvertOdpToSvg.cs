@@ -1,29 +1,36 @@
 using System;
 using System.IO;
 using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
+        // Path to the source ODP file
+        string sourceFile = "input.odp";
+
         // Load the ODP presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.odp");
-
-        // Convert each slide to an SVG file
-        for (int index = 0; index < presentation.Slides.Count; index++)
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourceFile))
         {
-            Aspose.Slides.ISlide slide = presentation.Slides[index];
-            string svgFileName = $"slide_{index + 1}.svg";
-
-            using (FileStream svgStream = File.Create(svgFileName))
+            // Iterate through each slide in the presentation
+            for (int index = 0; index < presentation.Slides.Count; index++)
             {
-                // Save the current slide as SVG
-                slide.WriteAsSvg(svgStream);
-            }
-        }
+                // Get the current slide
+                Aspose.Slides.ISlide slide = presentation.Slides[index];
 
-        // Save the presentation (required before exit)
-        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+                // Define the output SVG file name
+                string svgFile = $"slide_{index + 1}.svg";
+
+                // Create a file stream for the SVG output
+                using (FileStream svgStream = File.Create(svgFile))
+                {
+                    // Write the slide content as SVG to the stream
+                    slide.WriteAsSvg(svgStream);
+                }
+            }
+
+            // Save the presentation (optional, ensures any changes are persisted)
+            presentation.Save("output.odp", Aspose.Slides.Export.SaveFormat.Odp);
+        }
     }
 }
