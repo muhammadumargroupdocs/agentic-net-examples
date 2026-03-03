@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
@@ -9,22 +10,12 @@ class Program
         // Load the source presentation
         Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
 
-        // Create HTML export options
+        // Configure HTML export options for high‑quality images
         Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+        htmlOptions.JpegQuality = 100; // maximum JPEG quality
+        htmlOptions.SlideImageFormat = new Aspose.Slides.Export.SlideImageFormat(); // default high‑quality image format
 
-        // Create a controller that embeds all fonts in the HTML output
-        Aspose.Slides.Export.EmbedAllFontsHtmlController embedController = new Aspose.Slides.Export.EmbedAllFontsHtmlController();
-
-        // Create a custom HTML formatter using the embed controller
-        Aspose.Slides.Export.HtmlFormatter customFormatter = Aspose.Slides.Export.HtmlFormatter.CreateCustomFormatter(embedController);
-
-        // Assign the custom formatter to the HTML options
-        htmlOptions.HtmlFormatter = customFormatter;
-
-        // Save the presentation as HTML with embedded original fonts
+        // Save the presentation as a single HTML file
         presentation.Save("output.html", Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
-
-        // Clean up resources
-        presentation.Dispose();
     }
 }
