@@ -12,26 +12,23 @@ namespace PowerPointToSvg
             // Path to the source PowerPoint file
             string inputPath = "input.pptx";
 
-            // Directory to store the generated SVG files
-            string outputDirectory = "output_svgs";
-            Directory.CreateDirectory(outputDirectory);
-
             // Load the presentation
-            using (Presentation presentation = new Presentation(inputPath))
+            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
             {
-                // Iterate through all slides and save each as SVG
+                // Iterate through all slides and save each as an SVG file
                 for (int index = 0; index < presentation.Slides.Count; index++)
                 {
-                    ISlide slide = presentation.Slides[index];
-                    string svgFilePath = Path.Combine(outputDirectory, $"slide_{index + 1}.svg");
-                    using (Stream fileStream = File.Create(svgFilePath))
+                    Aspose.Slides.ISlide slide = presentation.Slides[index];
+                    string svgPath = $"slide_{index + 1}.svg";
+
+                    using (FileStream svgStream = File.Create(svgPath))
                     {
-                        slide.WriteAsSvg(fileStream);
+                        slide.WriteAsSvg(svgStream);
                     }
                 }
 
-                // Save the presentation before exiting (optional copy)
-                presentation.Save("output.pptx", SaveFormat.Pptx);
+                // Save the presentation (no modifications made) before exiting
+                presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
             }
         }
     }
