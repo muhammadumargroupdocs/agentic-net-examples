@@ -1,27 +1,27 @@
 using System;
-using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Load the source presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
+        // Path to the source PowerPoint file
+        string sourcePath = "input.pptx";
+        // Path to the output HTML file
+        string outputPath = "output.html";
 
-        // Create SVG export options (default options)
-        Aspose.Slides.Export.SVGOptions svgOptions = new Aspose.Slides.Export.SVGOptions();
+        // Load the presentation from the file
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath);
 
-        // Configure slide image format to use SVG with the specified options
-        Aspose.Slides.Export.SlideImageFormat slideImageFormat = Aspose.Slides.Export.SlideImageFormat.Svg(svgOptions);
+        // Configure HTML5 export options for responsive layout
+        Aspose.Slides.Export.Html5Options htmlOptions = new Aspose.Slides.Export.Html5Options();
+        htmlOptions.SlidesLayoutOptions = new Aspose.Slides.Export.HandoutLayoutingOptions
+        {
+            Handout = Aspose.Slides.Export.HandoutType.Handouts4Horizontal
+        };
 
-        // Set up HTML export options for responsive layout
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
-        htmlOptions.SvgResponsiveLayout = true;               // Enable responsive SVG
-        htmlOptions.SlideImageFormat = slideImageFormat;      // Use SVG for slide images
-
-        // Save the presentation as a single responsive HTML file
-        presentation.Save("output.html", Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+        // Save the presentation as responsive HTML5
+        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html5, htmlOptions);
     }
 }
