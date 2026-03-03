@@ -1,30 +1,31 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
     static void Main()
     {
-        // Input PowerPoint file
-        System.String inputPath = "sample.pptx";
-        // Output PNG file pattern
-        System.String outputFormat = "slide_{0}.png";
+        // Path to the source PowerPoint file
+        string inputPath = "input.pptx";
+        // Output file name pattern
+        string outputFormat = "slide_{0}.png";
 
         // Load the presentation
         Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputPath);
 
-        // Convert each slide to PNG
-        for (int i = 0; i < pres.Slides.Count; i++)
+        // Iterate through each slide and save as PNG
+        for (int index = 0; index < pres.Slides.Count; index++)
         {
-            Aspose.Slides.ISlide slide = pres.Slides[i];
+            Aspose.Slides.ISlide slide = pres.Slides[index];
             using (Aspose.Slides.IImage image = slide.GetImage())
             {
-                System.String outputPath = System.String.Format(outputFormat, i);
+                string outputPath = string.Format(outputFormat, index);
                 image.Save(outputPath, Aspose.Slides.ImageFormat.Png);
             }
         }
 
-        // Save the presentation before exiting
-        pres.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+        // Release resources
         pres.Dispose();
     }
 }
