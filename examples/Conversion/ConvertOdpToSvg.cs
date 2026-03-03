@@ -3,34 +3,32 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-namespace OdpToSvgConverter
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // Path to the source ODP file
+        string inputPath = "input.odp";
+
+        // Load the ODP presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+        // Convert each slide to an SVG file
+        for (int i = 0; i < presentation.Slides.Count; i++)
         {
-            // Path to the source ODP file
-            string inputPath = "input.odp";
+            Aspose.Slides.ISlide slide = presentation.Slides[i];
+            string svgPath = $"slide_{i + 1}.svg";
 
-            // Load the ODP presentation
-            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+            using (FileStream fileStream = File.Create(svgPath))
             {
-                // Iterate through all slides and save each as an SVG file
-                for (int index = 0; index < presentation.Slides.Count; index++)
-                {
-                    Aspose.Slides.ISlide slide = presentation.Slides[index];
-                    string svgPath = $"slide_{index}.svg";
-
-                    using (FileStream svgStream = File.Create(svgPath))
-                    {
-                        slide.WriteAsSvg(svgStream);
-                    }
-                }
-
-                // Save the presentation before exiting (optional conversion to another format)
-                string outputPath = "output.odp";
-                presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Odp);
+                slide.WriteAsSvg(fileStream);
             }
         }
+
+        // Save the presentation before exiting (optional re-save)
+        presentation.Save("output.odp", Aspose.Slides.Export.SaveFormat.Odp);
+
+        // Release resources
+        presentation.Dispose();
     }
 }
