@@ -2,18 +2,35 @@ using System;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace AsposeSlidesDemo
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Load the PowerPoint presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
+        static void Main(string[] args)
+        {
+            // Path to the source PowerPoint file
+            string sourcePath = "PowerPoint.pptx";
 
-        // Configure PDF options to include hidden slides
-        Aspose.Slides.Export.PdfOptions pdfOptions = new Aspose.Slides.Export.PdfOptions();
-        pdfOptions.ShowHiddenSlides = true;
+            // Load the presentation
+            Presentation presentation = new Presentation(sourcePath);
 
-        // Save the presentation as PDF with the specified options
-        presentation.Save("output.pdf", Aspose.Slides.Export.SaveFormat.Pdf, pdfOptions);
+            // Create PDF export options
+            PdfOptions pdfOptions = new PdfOptions();
+
+            // Set password protection for the PDF
+            pdfOptions.Password = "password";
+
+            // Set access permissions (allow printing)
+            pdfOptions.AccessPermissions = PdfAccessPermissions.PrintDocument | PdfAccessPermissions.HighQualityPrint;
+
+            // Save the presentation as a password‑protected PDF
+            presentation.Save("PowerPoint-protected.pdf", SaveFormat.Pdf, pdfOptions);
+
+            // Save the presentation itself before exiting (as required by authoring rules)
+            presentation.Save("PowerPoint-saved.pptx", SaveFormat.Pptx);
+
+            // Clean up resources
+            presentation.Dispose();
+        }
     }
 }
