@@ -1,22 +1,19 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
-namespace ConvertToTiff
+namespace AsposeSlidesTiffConversion
 {
     class Program
     {
         static void Main(string[] args)
         {
-            // Convert PPT file to TIFF
-            Aspose.Slides.Presentation pptPresentation = new Aspose.Slides.Presentation("sample.ppt");
-            pptPresentation.Save("sample_converted.tiff", Aspose.Slides.Export.SaveFormat.Tiff);
-            pptPresentation.Dispose();
+            // Load the PowerPoint presentation from a file
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
 
-            // Convert PPTX file to TIFF
-            Aspose.Slides.Presentation pptxPresentation = new Aspose.Slides.Presentation("sample.pptx");
-            pptxPresentation.Save("sample_converted.pptx.tiff", Aspose.Slides.Export.SaveFormat.Tiff);
-            pptxPresentation.Dispose();
+            // Save the presentation as a multi‑page TIFF image
+            presentation.Save("output.tiff", Aspose.Slides.Export.SaveFormat.Tiff);
+
+            // Release resources
+            presentation.Dispose();
         }
     }
 }
