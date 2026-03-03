@@ -1,19 +1,34 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace ConvertPresentationToTiff
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Path to the source PPTX file
-        string inputPath = "input.pptx";
-        // Path for the resulting TIFF file
-        string outputPath = "output.tiff";
-
-        // Load the presentation from the specified file
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        static void Main(string[] args)
         {
-            // Save the presentation as a multi‑page TIFF image
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Tiff);
+            // Input PPTX file path
+            string inputPath = "input.pptx";
+            // Output TIFF file path
+            string outputPath = "output.tiff";
+
+            // Load the presentation
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+            // Create TIFF options
+            Aspose.Slides.Export.TiffOptions tiffOptions = new Aspose.Slides.Export.TiffOptions();
+
+            // Configure notes layout to include notes at the bottom
+            Aspose.Slides.Export.NotesCommentsLayoutingOptions notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
+            notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
+            tiffOptions.SlidesLayoutOptions = notesOptions;
+
+            // Save the presentation as a multi‑page TIFF with notes
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Tiff, tiffOptions);
+
+            // Dispose the presentation object
+            presentation.Dispose();
         }
     }
 }
