@@ -3,26 +3,33 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace SvgExportExample
 {
-    static void Main()
+    class Program
     {
-        // Load the PowerPoint presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
-
-        // Convert each slide to an SVG file
-        for (int i = 0; i < presentation.Slides.Count; i++)
+        static void Main(string[] args)
         {
-            Aspose.Slides.ISlide slide = presentation.Slides[i];
-            string svgFileName = $"slide_{i + 1}.svg";
+            // Path to the source presentation
+            var sourcePath = "input.pptx";
 
-            using (FileStream svgStream = File.Create(svgFileName))
+            // Load the presentation
+            using (var presentation = new Aspose.Slides.Presentation(sourcePath))
             {
-                slide.WriteAsSvg(svgStream);
+                // Iterate through all slides and export each as SVG
+                for (int index = 0; index < presentation.Slides.Count; index++)
+                {
+                    var slide = presentation.Slides[index];
+                    var svgFileName = $"slide_{index + 1}.svg";
+
+                    using (var svgStream = System.IO.File.Create(svgFileName))
+                    {
+                        slide.WriteAsSvg(svgStream);
+                    }
+                }
+
+                // Save the presentation before exiting
+                presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
             }
         }
-
-        // Save the presentation before exiting (no modifications made)
-        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
     }
 }
