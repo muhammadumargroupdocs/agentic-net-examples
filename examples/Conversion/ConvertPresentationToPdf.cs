@@ -1,32 +1,20 @@
 using System;
-using Aspose.Slides;
-using Aspose.Slides.Export;
+using System.IO;
 
 class Program
 {
     static void Main(string[] args)
     {
-        // Path to the source PPT or PPTX file
+        // Path to the source PowerPoint file
         string inputPath = "input.pptx";
-        // Path for the generated PDF file
+        // Path where the PDF will be saved
         string outputPath = "output.pdf";
 
-        // Load the presentation
+        // Load the presentation from the file
         using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
         {
-            // Configure advanced PDF export options
-            Aspose.Slides.Export.PdfOptions pdfOptions = new Aspose.Slides.Export.PdfOptions();
-            pdfOptions.JpegQuality = 90;
-            pdfOptions.SaveMetafilesAsPng = true;
-            pdfOptions.TextCompression = Aspose.Slides.Export.PdfTextCompression.Flate;
-            pdfOptions.Compliance = Aspose.Slides.Export.PdfCompliance.Pdf15;
-            pdfOptions.ShowHiddenSlides = true;
-            pdfOptions.Password = "secure";
-            pdfOptions.AccessPermissions = Aspose.Slides.Export.PdfAccessPermissions.PrintDocument |
-                                          Aspose.Slides.Export.PdfAccessPermissions.HighQualityPrint;
-
-            // Save the presentation as PDF using the specified options
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf, pdfOptions);
+            // Convert and save the presentation as PDF
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
         }
     }
 }
