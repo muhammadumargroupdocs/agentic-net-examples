@@ -4,18 +4,27 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Path to the source presentation file
-        string sourcePath = "input.pptx";
-        // Path to the output HTML file
-        string outputPath = "output.html";
+        // Load the source presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
 
-        // Load the presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath))
-        {
-            // Convert and save the presentation to HTML format
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html);
-        }
+        // Create HTML export options
+        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+
+        // Create a controller that embeds all fonts in the HTML output
+        Aspose.Slides.Export.EmbedAllFontsHtmlController embedController = new Aspose.Slides.Export.EmbedAllFontsHtmlController();
+
+        // Create a custom HTML formatter using the embed controller
+        Aspose.Slides.Export.HtmlFormatter customFormatter = Aspose.Slides.Export.HtmlFormatter.CreateCustomFormatter(embedController);
+
+        // Assign the custom formatter to the HTML options
+        htmlOptions.HtmlFormatter = customFormatter;
+
+        // Save the presentation as HTML with embedded original fonts
+        presentation.Save("output.html", Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+
+        // Clean up resources
+        presentation.Dispose();
     }
 }
