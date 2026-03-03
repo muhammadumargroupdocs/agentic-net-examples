@@ -1,38 +1,38 @@
 using System;
 using System.IO;
-using Aspose.Slides;
 
 class Program
 {
     static void Main(string[] args)
     {
         // Path to the source ODP file
-        string inputPath = "input.odp";
-        // Directory where SVG files will be saved
-        string outputDir = "output_svg";
+        string sourcePath = "sample.odp";
 
-        // Create output directory if it does not exist
-        if (!Directory.Exists(outputDir))
+        // Directory to store the generated SVG files
+        string outputFolder = "SvgOutput";
+
+        // Ensure the output directory exists
+        if (!Directory.Exists(outputFolder))
         {
-            Directory.CreateDirectory(outputDir);
+            Directory.CreateDirectory(outputFolder);
         }
 
         // Load the ODP presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        using (Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(sourcePath))
         {
-            // Convert each slide to an SVG file
-            for (int i = 0; i < presentation.Slides.Count; i++)
+            // Iterate through each slide and save it as an SVG file
+            for (int index = 0; index < pres.Slides.Count; index++)
             {
-                Aspose.Slides.ISlide slide = presentation.Slides[i];
-                string svgPath = Path.Combine(outputDir, $"slide_{i + 1}.svg");
-                using (Stream fileStream = File.Create(svgPath))
+                Aspose.Slides.ISlide slide = pres.Slides[index];
+                string svgFilePath = Path.Combine(outputFolder, $"slide_{index + 1}.svg");
+                using (Stream svgStream = File.Create(svgFilePath))
                 {
-                    slide.WriteAsSvg(fileStream);
+                    slide.WriteAsSvg(svgStream);
                 }
             }
 
-            // Save the presentation before exiting (no changes made)
-            presentation.Save("saved_output.odp", Aspose.Slides.Export.SaveFormat.Odp);
+            // Save the presentation (required before exiting)
+            pres.Save("converted.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
         }
     }
 }
