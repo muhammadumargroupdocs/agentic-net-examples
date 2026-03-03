@@ -3,30 +3,38 @@ using System.IO;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace PPTtoSVG
 {
-    static void Main()
+    class Program
     {
-        // Load the source PowerPoint presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
-
-        // Convert each slide to an individual SVG file
-        for (int i = 0; i < presentation.Slides.Count; i++)
+        static void Main(string[] args)
         {
-            Aspose.Slides.ISlide slide = presentation.Slides[i];
-            string svgFileName = $"slide_{i + 1}.svg";
+            // Path to the source PowerPoint file
+            string sourcePath = "input.pptx";
 
-            using (FileStream svgStream = File.Create(svgFileName))
+            // Load the presentation
+            using (Presentation presentation = new Presentation(sourcePath))
             {
-                // Write the current slide as SVG
-                slide.WriteAsSvg(svgStream);
+                // Iterate through all slides
+                for (int index = 0; index < presentation.Slides.Count; index++)
+                {
+                    // Get the current slide
+                    ISlide slide = presentation.Slides[index];
+
+                    // Define the SVG output file name
+                    string svgPath = $"slide_{index + 1}.svg";
+
+                    // Create a file stream for the SVG file
+                    using (FileStream svgStream = File.Create(svgPath))
+                    {
+                        // Write the slide as SVG
+                        slide.WriteAsSvg(svgStream);
+                    }
+                }
+
+                // Save the presentation before exiting (optional, but required by rules)
+                presentation.Save("output.pptx", SaveFormat.Pptx);
             }
         }
-
-        // Save the presentation (required before exiting)
-        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
-
-        // Release resources
-        presentation.Dispose();
     }
 }
