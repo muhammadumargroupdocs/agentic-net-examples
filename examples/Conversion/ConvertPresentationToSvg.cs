@@ -4,26 +4,31 @@ using Aspose.Slides;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Load the PowerPoint presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx"))
-        {
-            // Iterate through all slides and convert each to SVG
-            for (int index = 0; index < presentation.Slides.Count; index++)
-            {
-                Aspose.Slides.ISlide slide = presentation.Slides[index];
-                string svgPath = $"slide_{index + 1}.svg";
+        // Path to the source PowerPoint file
+        string sourcePath = "input.pptx";
 
-                // Create a file stream for the SVG output
-                using (FileStream svgStream = File.Create(svgPath))
+        // Load the presentation
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath))
+        {
+            // Iterate through each slide in the presentation
+            for (int i = 0; i < presentation.Slides.Count; i++)
+            {
+                // Get the current slide
+                Aspose.Slides.ISlide slide = presentation.Slides[i];
+
+                // Define the output SVG file name
+                string svgPath = $"slide_{i + 1}.svg";
+
+                // Save the slide as an SVG file
+                using (FileStream fileStream = File.Create(svgPath))
                 {
-                    // Write the slide as SVG
-                    slide.WriteAsSvg(svgStream);
+                    slide.WriteAsSvg(fileStream);
                 }
             }
 
-            // Save the presentation before exiting
+            // Save the presentation before exiting (no modifications made)
             presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
         }
     }
