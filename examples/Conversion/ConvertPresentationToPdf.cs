@@ -1,4 +1,6 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
@@ -6,16 +8,14 @@ class Program
     {
         // Path to the source PPTX file
         string inputPath = "input.pptx";
-        // Path for the generated PDF file
+        // Path to the destination PDF file
         string outputPath = "output.pdf";
 
-        // Load the presentation from the PPTX file
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
-
-        // Save the presentation as PDF
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
-
-        // Release resources
-        presentation.Dispose();
+        // Load the presentation
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        {
+            // Save the presentation as PDF
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf);
+        }
     }
 }
