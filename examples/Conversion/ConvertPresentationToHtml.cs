@@ -1,33 +1,21 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Input PowerPoint file and output HTML file paths
-        System.String inputPath = "input.pptx";
-        System.String outputPath = "output.html";
+        // Path to the source presentation file
+        string sourcePath = "input.pptx";
+        // Path to the output HTML file
+        string outputPath = "output.html";
 
         // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
-
-        // Create HTML export options
-        Aspose.Slides.Export.HtmlOptions htmlOpt = new Aspose.Slides.Export.HtmlOptions();
-
-        // Use a simple document formatter (no CSS, no slide titles)
-        htmlOpt.HtmlFormatter = Aspose.Slides.Export.HtmlFormatter.CreateDocumentFormatter("", false);
-
-        // Configure notes layout options (optional)
-        Aspose.Slides.Export.NotesCommentsLayoutingOptions notesOptions = new Aspose.Slides.Export.NotesCommentsLayoutingOptions();
-        notesOptions.NotesPosition = Aspose.Slides.Export.NotesPositions.BottomFull;
-
-        // Assign notes layout options to HTML options
-        htmlOpt.SlidesLayoutOptions = notesOptions;
-
-        // Save the presentation as HTML
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, htmlOpt);
-
-        // Release resources
-        presentation.Dispose();
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath))
+        {
+            // Convert and save the presentation to HTML format
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html);
+        }
     }
 }
