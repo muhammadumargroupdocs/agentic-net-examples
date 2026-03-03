@@ -1,36 +1,39 @@
 using System;
 using System.IO;
 using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace OdpToSvgConverter
 {
-    static void Main()
+    class Program
     {
-        // Path to the source ODP file
-        string sourceFile = "input.odp";
-
-        // Load the ODP presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourceFile))
+        static void Main(string[] args)
         {
-            // Iterate through each slide in the presentation
-            for (int index = 0; index < presentation.Slides.Count; index++)
+            // Path to the source ODP file
+            string inputPath = "input.odp";
+
+            // Directory where SVG files will be saved
+            string outputDirectory = "output_svgs";
+            Directory.CreateDirectory(outputDirectory);
+
+            // Load the ODP presentation
+            using (Presentation presentation = new Presentation(inputPath))
             {
-                // Get the current slide
-                Aspose.Slides.ISlide slide = presentation.Slides[index];
-
-                // Define the output SVG file name
-                string svgFile = $"slide_{index + 1}.svg";
-
-                // Create a file stream for the SVG output
-                using (FileStream svgStream = File.Create(svgFile))
+                // Iterate through all slides and save each as an SVG file
+                for (int index = 0; index < presentation.Slides.Count; index++)
                 {
-                    // Write the slide content as SVG to the stream
-                    slide.WriteAsSvg(svgStream);
-                }
-            }
+                    ISlide slide = presentation.Slides[index];
+                    string svgFilePath = Path.Combine(outputDirectory, $"slide_{index + 1}.svg");
 
-            // Save the presentation (optional, ensures any changes are persisted)
-            presentation.Save("output.odp", Aspose.Slides.Export.SaveFormat.Odp);
+                    using (Stream svgStream = File.Create(svgFilePath))
+                    {
+                        slide.WriteAsSvg(svgStream);
+                    }
+                }
+
+                // Save the presentation before exiting (optional, as no changes are made)
+                presentation.Save("output.odp", SaveFormat.Odp);
+            }
         }
     }
 }
