@@ -1,16 +1,24 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        var inputPath = "input.pptx";
-        var outputPath = "output.ppt";
+        // Path to the source PPTX file
+        string inputFile = "input.pptx";
+        // Path for the resulting PPT file
+        string outputFile = "output.ppt";
 
-        var presentation = new Aspose.Slides.Presentation(inputPath);
-        var options = new Aspose.Slides.Export.PptOptions();
+        // Load the PPTX presentation
+        using (Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputFile))
+        {
+            // Create PPT save options (default settings)
+            Aspose.Slides.Export.PptOptions pptOptions = new Aspose.Slides.Export.PptOptions();
 
-        presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Ppt, options);
-        presentation.Dispose();
+            // Save the presentation in PPT format (handout mode is inherent to PPT)
+            pres.Save(outputFile, Aspose.Slides.Export.SaveFormat.Ppt, pptOptions);
+        }
     }
 }
