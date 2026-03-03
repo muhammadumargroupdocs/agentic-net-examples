@@ -4,18 +4,27 @@ using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Load the source PowerPoint presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
+        // Input PowerPoint file
+        string inputPath = "input.pptx";
+        // Output HTML file
+        string outputPath = "output.html";
+        // Custom CSS file URL or path
+        string cssPath = "custom.css";
 
-        // Create HtmlOptions to control HTML export; default settings preserve slide dimensions
-        Aspose.Slides.Export.HtmlOptions htmlOptions = new Aspose.Slides.Export.HtmlOptions();
+        // Load the presentation
+        using (Presentation presentation = new Presentation(inputPath))
+        {
+            // Create an HTML formatter with custom CSS and slide titles enabled
+            HtmlFormatter formatter = HtmlFormatter.CreateDocumentFormatter(cssPath, true);
 
-        // Save the presentation as HTML using the options
-        presentation.Save("output.html", Aspose.Slides.Export.SaveFormat.Html, htmlOptions);
+            // Set up HTML export options and assign the custom formatter
+            HtmlOptions options = new HtmlOptions();
+            options.HtmlFormatter = formatter;
 
-        // Release resources
-        presentation.Dispose();
+            // Save the presentation as HTML using the specified options
+            presentation.Save(outputPath, SaveFormat.Html, options);
+        }
     }
 }
