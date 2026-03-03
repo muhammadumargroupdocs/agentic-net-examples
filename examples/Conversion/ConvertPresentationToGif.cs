@@ -1,32 +1,24 @@
 using System;
 
-namespace ConvertToGif
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
+        // Path to the source PowerPoint file
+        string sourcePath = "input.pptx";
+        // Path to the output GIF file
+        string outputPath = "output.gif";
+
+        // Load the presentation
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(sourcePath))
         {
-            // Check for input file argument
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Please provide the path to a PPT or PPTX file.");
-                return;
-            }
+            // Create GIF export options (optional custom settings)
+            Aspose.Slides.Export.GifOptions gifOptions = new Aspose.Slides.Export.GifOptions();
+            // Set default delay between frames (in milliseconds)
+            gifOptions.DefaultDelay = 2000;
 
-            // Input presentation path
-            string inputPath = args[0];
-
-            // Determine output GIF path (same name with .gif extension)
-            string outputPath = System.IO.Path.ChangeExtension(inputPath, ".gif");
-
-            // Load the presentation and convert to GIF using default options
-            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
-            {
-                // Save as animated GIF
-                presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Gif, new Aspose.Slides.Export.GifOptions());
-            }
-
-            Console.WriteLine($"Presentation converted to GIF: {outputPath}");
+            // Save the presentation as an animated GIF
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Gif, gifOptions);
         }
     }
 }
