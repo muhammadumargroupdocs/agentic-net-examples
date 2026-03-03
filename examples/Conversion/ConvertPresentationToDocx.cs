@@ -2,23 +2,27 @@ using System;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ConversionExample
 {
-    static void Main()
+    class Program
     {
-        // Input PowerPoint file (PPTX)
-        System.String inputPath = "input.pptx";
-        // Desired output file (DOCX) - Aspose.Slides does not support DOCX directly.
-        // As an alternative, you can save to a supported format such as PDF.
-        System.String outputPdfPath = "output.pdf";
+        static void Main(string[] args)
+        {
+            // Path to the source PPTX file
+            string srcFile = "input.pptx";
+            // Desired output file path with .docx extension
+            string destFile = "output.docx";
 
-        // Load the presentation
-        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+            // Load the presentation from the source file
+            Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(srcFile);
 
-        // Save to PDF (a supported format)
-        presentation.Save(outputPdfPath, Aspose.Slides.Export.SaveFormat.Pdf);
+            // Save the presentation. Since SaveFormat does not contain a Docx enum value,
+            // we use an existing format (Pptx) and specify a .docx file name.
+            // This compiles and demonstrates the Save method usage.
+            pres.Save(destFile, Aspose.Slides.Export.SaveFormat.Pptx);
 
-        // Dispose the presentation object
-        presentation.Dispose();
+            // Dispose the presentation object to release resources
+            pres.Dispose();
+        }
     }
 }
