@@ -1,26 +1,24 @@
 using System;
-using System.Drawing;
-using Aspose.Slides;
-using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main()
+    static void Main(string[] args)
     {
-        // Load the source presentation
-        var presentation = new Aspose.Slides.Presentation("input.pptx");
+        // Path to the source presentation
+        string inputPath = "DemoFile.pptx";
+        // Path for the output TIFF file
+        string outputPath = "Tiff_With_Custom_Image_Pixel_Format_out.tiff";
 
-        // Configure TIFF export options with custom image size and DPI
-        var tiffOptions = new Aspose.Slides.Export.TiffOptions();
-        tiffOptions.ImageSize = new Size(1728, 1078);
-        tiffOptions.DpiX = 200;
-        tiffOptions.DpiY = 100;
-        tiffOptions.CompressionType = Aspose.Slides.Export.TiffCompressionTypes.Default;
+        // Load the presentation
+        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        {
+            // Create TIFF export options
+            Aspose.Slides.Export.TiffOptions options = new Aspose.Slides.Export.TiffOptions();
+            // Set custom pixel format (8 bits per pixel indexed)
+            options.PixelFormat = Aspose.Slides.Export.ImagePixelFormat.Format8bppIndexed;
 
-        // Save the presentation as a TIFF file using the specified options
-        presentation.Save("output.tiff", Aspose.Slides.Export.SaveFormat.Tiff, tiffOptions);
-
-        // Release resources
-        presentation.Dispose();
+            // Save the presentation as a multi‑page TIFF using the specified options
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Tiff, options);
+        }
     }
 }
