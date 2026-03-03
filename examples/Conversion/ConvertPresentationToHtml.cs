@@ -1,22 +1,27 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-class Program
+namespace PresentationToHtml
 {
-    static void Main(string[] args)
+    class Program
     {
-        // Path to the source presentation file
-        string inputPath = "input.pptx";
-        // Path for the generated HTML file
-        string outputPath = "output.html";
-
-        // Load the presentation from the file
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        static void Main(string[] args)
         {
-            // Create HTML export options (optional configuration)
-            Aspose.Slides.Export.HtmlOptions options = new Aspose.Slides.Export.HtmlOptions();
+            // Path to the source PowerPoint file
+            string inputPath = "input.pptx";
 
-            // Save the presentation as HTML using the specified options
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html, options);
+            // Path for the generated HTML file
+            string outputPath = "output.html";
+
+            // Load the presentation from the file
+            Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath);
+
+            // Save the entire presentation as HTML
+            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Html);
+
+            // Ensure resources are released before exiting
+            presentation.Dispose();
         }
     }
 }
