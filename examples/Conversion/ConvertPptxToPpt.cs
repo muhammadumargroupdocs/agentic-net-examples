@@ -1,23 +1,23 @@
 using System;
+using Aspose.Slides;
+using Aspose.Slides.Export;
 
-namespace PresentationConversion
+class Program
 {
-    class Program
+    static void Main(string[] args)
     {
-        static void Main(string[] args)
-        {
-            // Path to the source PPTX file
-            string inputFile = "input.pptx";
+        // Path to the source PPTX file
+        string inputFile = "input.pptx";
+        // Path for the converted PPT file
+        string outputFile = "output.ppt";
 
-            // Path for the converted PPT file
-            string outputFile = "output.ppt";
+        // Load the PPTX presentation
+        Aspose.Slides.Presentation pres = new Aspose.Slides.Presentation(inputFile);
 
-            // Load the PPTX presentation
-            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputFile))
-            {
-                // Save the presentation in PPT format
-                presentation.Save(outputFile, Aspose.Slides.Export.SaveFormat.Ppt);
-            }
-        }
+        // Save the presentation in PPT format
+        pres.Save(outputFile, Aspose.Slides.Export.SaveFormat.Ppt);
+
+        // Release resources
+        pres.Dispose();
     }
 }
