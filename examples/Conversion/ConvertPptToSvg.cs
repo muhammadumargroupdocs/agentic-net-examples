@@ -1,38 +1,32 @@
 using System;
 using System.IO;
 using Aspose.Slides;
+using Aspose.Slides.Export;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
-        // Path to the source PowerPoint file
-        string inputPath = "input.pptx";
-        // Directory where SVG files will be saved
-        string outputDir = "output_svg";
+        // Load the source PowerPoint presentation
+        Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation("input.pptx");
 
-        // Create output directory if it does not exist
-        if (!Directory.Exists(outputDir))
+        // Convert each slide to an individual SVG file
+        for (int i = 0; i < presentation.Slides.Count; i++)
         {
-            Directory.CreateDirectory(outputDir);
-        }
+            Aspose.Slides.ISlide slide = presentation.Slides[i];
+            string svgFileName = $"slide_{i + 1}.svg";
 
-        // Load the presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
-        {
-            // Convert each slide to an SVG file
-            for (int i = 0; i < presentation.Slides.Count; i++)
+            using (FileStream svgStream = File.Create(svgFileName))
             {
-                Aspose.Slides.ISlide slide = presentation.Slides[i];
-                string svgPath = Path.Combine(outputDir, $"slide_{i + 1}.svg");
-                using (Stream fileStream = File.Create(svgPath))
-                {
-                    slide.WriteAsSvg(fileStream);
-                }
+                // Write the current slide as SVG
+                slide.WriteAsSvg(svgStream);
             }
-
-            // Save the presentation before exiting (no modifications made)
-            presentation.Save(inputPath, Aspose.Slides.Export.SaveFormat.Pptx);
         }
+
+        // Save the presentation (required before exiting)
+        presentation.Save("output.pptx", Aspose.Slides.Export.SaveFormat.Pptx);
+
+        // Release resources
+        presentation.Dispose();
     }
 }
