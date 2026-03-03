@@ -2,24 +2,29 @@ using System;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
-class Program
+namespace ConvertPptToPptx
 {
-    static void Main()
+    class Program
     {
-        // Path to the source PPT file
-        string inputPath = "input.ppt";
-        // Path for the converted PPTX file
-        string outputPath = "output.pptx";
-
-        // Load the PPT presentation
-        using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+        static void Main(string[] args)
         {
-            // Create PPTX save options using the factory
-            Aspose.Slides.Export.SaveOptionsFactory optionsFactory = new Aspose.Slides.Export.SaveOptionsFactory();
-            Aspose.Slides.Export.IPptxOptions pptxOptions = optionsFactory.CreatePptxOptions();
+            // Input and output file paths
+            string inputPath = "input.ppt";
+            string outputPath = "output.pptx";
 
-            // Save the presentation as PPTX with the specified options
-            presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pptx, pptxOptions);
+            // Create PPTX save options using the factory
+            SaveOptionsFactory optionsFactory = new SaveOptionsFactory();
+            IPptxOptions pptxOptions = optionsFactory.CreatePptxOptions();
+
+            // Load the PPT presentation
+            using (Presentation presentation = new Presentation(inputPath))
+            {
+                // Save the presentation as PPTX with the created options
+                presentation.Save(outputPath, SaveFormat.Pptx, pptxOptions);
+            }
+
+            // Indicate completion
+            Console.WriteLine("Conversion completed.");
         }
     }
 }
