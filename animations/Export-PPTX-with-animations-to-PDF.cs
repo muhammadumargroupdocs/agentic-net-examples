@@ -1,3 +1,4 @@
+using System;
 using Aspose.Slides;
 using Aspose.Slides.Export;
 
@@ -7,21 +8,31 @@ class Program
     {
         try
         {
-            string inputPath = "input.pptx";
-            string outputPath = "output.pdf";
+            var inputPath = "input.pptx";
+            var outputPath = "output.pdf";
 
-            using (Aspose.Slides.Presentation presentation = new Aspose.Slides.Presentation(inputPath))
+            // Load the presentation
+            using (var presentation = new Presentation(inputPath))
             {
-                // Preserve animations (no modification needed)
-                Aspose.Slides.Export.PdfOptions pdfOptions = new Aspose.Slides.Export.PdfOptions();
-                pdfOptions.ShowHiddenSlides = true; // include hidden slides if any
+                // Process animations to ensure they are considered
+                using (var animationsGenerator = new PresentationAnimationsGenerator(presentation))
+                {
+                    animationsGenerator.Run(presentation.Slides);
+                }
 
-                presentation.Save(outputPath, Aspose.Slides.Export.SaveFormat.Pdf, pdfOptions);
+                // Set PDF options (include hidden slides)
+                var pdfOptions = new PdfOptions
+                {
+                    ShowHiddenSlides = true
+                };
+
+                // Export to PDF
+                presentation.Save(outputPath, SaveFormat.Pdf, pdfOptions);
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
-            System.Console.WriteLine("Error: " + ex.Message);
+            Console.WriteLine("Error: " + ex.Message);
         }
     }
 }
