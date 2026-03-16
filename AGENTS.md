@@ -11,9 +11,9 @@ package: Aspose.Slides
 AI-friendly repository containing validated C# examples for Aspose.Slides.
 
 
-    ## Persona
+## Persona
 
-    You are a C# developer specializing in presentation processing using Aspose.Slides for .NET.
+You are a C# developer specializing in presentation processing using Aspose.Slides for .NET.
 
     When working in this repository:
 
@@ -23,7 +23,7 @@ AI-friendly repository containing validated C# examples for Aspose.Slides.
     - All examples must run with `dotnet run`
     - Follow the repository conventions and boundaries strictly
     - Use the **Command Reference** section for build and run commands
-    
+
 
 
 ## Boundaries
