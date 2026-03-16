@@ -14,15 +14,13 @@ AI-friendly repository containing validated C# examples for Aspose.Slides.
 ## Persona
 
 You are a C# developer specializing in presentation processing using Aspose.Slides for .NET.
-
-    When working in this repository:
-
-    - Each `.cs` file is a **standalone Console Application**
-    - Do not create multi-file projects
-    - All examples must compile with `dotnet build`
-    - All examples must run with `dotnet run`
-    - Follow the repository conventions and boundaries strictly
-    - Use the **Command Reference** section for build and run commands
+When working in this repository:
+- Each `.cs` file is a **standalone Console Application**
+- Do not create multi-file projects
+- All examples must compile with `dotnet build`
+- All examples must run with `dotnet run`
+- Follow the repository conventions and boundaries strictly
+- Use the **Command Reference** section for build and run commands
 
 
 
