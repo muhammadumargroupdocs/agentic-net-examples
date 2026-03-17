@@ -1,0 +1,58 @@
+{
+  "product": "Aspose.Slides",
+  "platform": "net",
+  "framework": "net10.0",
+  "package_version": "AUTO",
+  "total_examples": 15,
+  "total_categories": 4,
+  "last_updated": "2026-03-17",
+  "categories": [
+    {
+      "name": "3d-presentations",
+      "file_count": 8,
+      "files": [
+        "Capture-PPTX-3d-objects-as-PNG.cs",
+        "Convert-PPTX-3d-effects-to-PDF.cs",
+        "Create-PPTX-3d-effects-in-PDF.cs",
+        "Export-PPTX-3d-shapes-text-to-PNG.cs",
+        "Generate-PPTX-3d-models-to-PNG.cs",
+        "Preserve-PPTX-3d-effects-in-PDF.cs",
+        "Render-PPTX-3d-objects-to-PNG.cs",
+        "Render-PPTX-3d-shapes-to-JPEG.cs"
+      ],
+      "required_namespaces": [],
+      "key_apis": []
+    },
+    {
+      "name": "animations",
+      "file_count": 2,
+      "files": [
+        "Export-PPTX-with-animations-to-PDF.cs",
+        "Remove-animations-from-PPTX-slides.cs"
+      ],
+      "required_namespaces": [],
+      "key_apis": []
+    },
+    {
+      "name": "conversion",
+      "file_count": 2,
+      "files": [
+        "Convert-PPT-and-PPTX-to-PDF.cs",
+        "Convert-PPT-and-PPTX-to-TIFF.cs"
+      ],
+      "required_namespaces": [],
+      "key_apis": []
+    },
+    {
+      "name": "vba-macros",
+      "file_count": 3,
+      "files": [
+        "Convert-PPTX-with-macro-to-PDF.cs",
+        "Extract-vba-macro-from-PPTX-presentation.cs",
+        "Remove-vba-macro-from-pptx-presentation.cs"
+      ],
+      "required_namespaces": [],
+      "key_apis": []
+    }
+  ]
+}
