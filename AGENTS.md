@@ -220,18 +220,47 @@ Replace the nonexistent HtmlOptions.EmbedImages property with a custom HtmlForma
 
 
 ## Domain Knowledge
-- Rule demonstrating access builtin properties in Aspose.Slides.
-- Rule demonstrating access child nodes in Aspose.Slides.
-- Rule demonstrating access child node specific position in Aspose.Slides.
-- Rule demonstrating access layout formats in Aspose.Slides.
-- Rule demonstrating access modifying properties in Aspose.Slides.
-- Rule demonstrating access oleobject frame in Aspose.Slides.
-- Rule demonstrating access open doc in Aspose.Slides.
-- Rule demonstrating access properties in Aspose.Slides.
-- Rule demonstrating access slideby id in Aspose.Slides.
-- Rule demonstrating access slideby index in Aspose.Slides.
-- Rule demonstrating access slide comments in Aspose.Slides.
-- Rule demonstrating access slides in Aspose.Slides.
+
+- **Replace fonts explicitly before saving the presentation.**  
+  Use `IFontData`, `FontData`, and `FontsManager.ReplaceFont(...)` to swap one font family with another across the deck, then save the updated file.  
+  **Example:** Create `IFontData sourceFont = new FontData("Arial");`, `IFontData destFont = new FontData("Times New Roman");`, call `presentation.FontsManager.ReplaceFont(sourceFont, destFont);`, and save as `output.pptx`.
+
+- **Clone a slide into a specific section to preserve presentation structure.**  
+  When duplicating slides, create or append the destination section first and use `Slides.AddClone(...)` with the target `ISection`.  
+  **Example:** Add a rectangle to `presentation.Slides[0]`, create `ISection section2 = presentation.Sections.AppendEmptySection("Section 2");`, then call `presentation.Slides.AddClone(presentation.Slides[0], section2);`.
+
+- **Replace placeholder text by iterating shapes and updating only auto shapes.**  
+  Loop through `slide.Shapes`, check `shape.Placeholder != null`, cast the shape to `IAutoShape`, and update `TextFrame.Text`.  
+  **Example:** Iterate the first slide’s shapes and set `((IAutoShape)shape).TextFrame.Text = "Updated title";` only for placeholder shapes before saving.
+
+- **Animate chart categories element-by-element through the slide timeline.**  
+  Access the chart from the slide’s shape collection, add a base effect to `Timeline.MainSequence`, then loop through categories and series to add `ByElementInCategory` effects.  
+  **Example:** Cast `slide.Shapes[0]` to `Aspose.Slides.Charts.IChart`, add a `Fade` effect, then use nested loops over `chart.ChartData.Categories.Count` and `chart.ChartData.Series.Count` to add `Appear` animations.
+
+- **Export a shape as a PNG thumbnail without exporting the whole slide.**  
+  Create a shape, style it, call `shape.GetImage(...)`, and save the returned `IImage` with `Aspose.Slides.ImageFormat.Png`.  
+  **Example:** Add a rectangle, set `FillFormat.FillType = NoFill`, set `LineFormat.SketchFormat.SketchType = Scribble`, then call `shape.GetImage(Aspose.Slides.ShapeThumbnailBounds.Shape, 2f, 2f)` and save it as `shape.png`.
+
+- **Access SmartArt by walking the slide’s shape collection and casting matching shapes.**  
+  To inspect or process SmartArt content, iterate `slide.Shapes`, detect SmartArt shapes, and cast them to `Aspose.Slides.SmartArt.ISmartArt` or `SmartArt`.  
+  **Example:** Loop through `slide.Shapes`, check `if (shape is Aspose.Slides.SmartArt.ISmartArt)`, cast it, then inspect `smartArt.AllNodes` to read node text and hierarchy.
+
+- **Read SmartArt child nodes when you need hierarchy, level, and position data.**  
+  For tree-style processing, iterate `AllNodes`, then iterate each node’s `ChildNodes` to access nested content and metadata like `Level` and `Position`.  
+  **Example:** Cast a SmartArt shape to `SmartArt`, loop over `smart.AllNodes`, then for each parent node loop over `parentNode.ChildNodes` and read `childNode.TextFrame.Text`.
+
+- **Embed audio in a slide and configure playback behavior directly on the audio frame.**  
+  After creating an embedded audio frame, set playback options such as `PlayAcrossSlides`, `RewindAudio`, `Volume`, and `PlayMode`.  
+  **Example:** Call `slide.Shapes.AddAudioFrameEmbedded(...)`, then set `audioFrame.PlayAcrossSlides = true;`, `audioFrame.RewindAudio = true;`, and `audioFrame.PlayMode = Aspose.Slides.AudioPlayModePreset.Auto;`.
+
+- **Add hyperlinks through text portions inside an auto shape rather than on the shape itself.**  
+  Create an auto shape, add text, then attach the hyperlink to the first text portion using `PortionFormat.HyperlinkClick`.  
+  **Example:** Create a rectangle, call `shape.AddTextFrame("Open site");`, then set `shape.TextFrame.Paragraphs[0].Portions[0].PortionFormat.HyperlinkClick = new Aspose.Slides.Hyperlink("https://example.com");`.
+
+- **Store images inside table cells by using picture fill formatting on the target cell.**  
+  Add a table, load an image, insert it into the presentation image collection, and assign it through `CellFormat.FillFormat.PictureFillFormat.Picture.Image`.  
+  **Example:** Create a table with `slide.Shapes.AddTable(...)`, load an image with `Aspose.Slides.Images.FromFile("input.jpg")`, add it via `presentation.Images.AddImage(...)`, then set the first cell’s fill type to `Picture` and apply the image.
+
 
 
 
