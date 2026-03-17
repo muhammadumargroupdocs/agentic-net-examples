@@ -64,20 +64,15 @@ catch (Exception ex)
 }
 ```
 
-### Important Notes
-- One-based indexing where applicable
-- IDisposable objects wrapped in using blocks
-- Console output used for status messages
-
 ## Contributing
 
 Examples in this repository are automatically generated.
 
 ## Related Resources
 
-- Aspose.Slides Documentation
-- API Reference
-- Aspose Forum
+- [Aspose.Slides for .NET Documentation](https://docs.aspose.com/slides/net/)
+- [API Reference](https://reference.aspose.com/slides/net/)
+- [Aspose Forum](https://forum.aspose.com/c/slides/11)
 - [AI Agent Guide](./AGENTS.md)
 
 ## License
