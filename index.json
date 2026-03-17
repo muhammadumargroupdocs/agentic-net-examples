@@ -20,8 +20,29 @@
         "Render-PPTX-3d-objects-to-PNG.cs",
         "Render-PPTX-3d-shapes-to-JPEG.cs"
       ],
-      "required_namespaces": [],
-      "key_apis": []
+      "required_namespaces": [
+        "System",
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "System.IO"
+      ],
+      "key_apis": [
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "Aspose.Slides.Presentation",
+        "Aspose.Slides.ImageFormat.Png",
+        "Aspose.Slides.ISlide",
+        "Aspose.Slides.IImage",
+        "Aspose.Slides.Export.SaveFormat.Pptx",
+        "Aspose.Slides.Export.PdfOptions",
+        "Aspose.Slides.Export.SaveFormat.Pdf",
+        "Aspose.Slides.PptException",
+        "Aspose.Slides.PptxReadException",
+        "Aspose.Slides.IAutoShape",
+        "Aspose.Slides.ShapeType.Rectangle",
+        "Aspose.Slides.MaterialPresetType.Plastic",
+        "Aspose.Slides.LightRigPresetType.Balanced"
+      ]
     },
     {
       "name": "animations",
@@ -30,8 +51,18 @@
         "Export-PPTX-with-animations-to-PDF.cs",
         "Remove-animations-from-PPTX-slides.cs"
       ],
-      "required_namespaces": [],
-      "key_apis": []
+      "required_namespaces": [
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "System"
+      ],
+      "key_apis": [
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "Aspose.Slides.Presentation",
+        "Aspose.Slides.Export.PdfOptions",
+        "Aspose.Slides.Export.SaveFormat.Pdf"
+      ]
     },
     {
       "name": "conversion",
@@ -40,8 +71,15 @@
         "Convert-PPT-and-PPTX-to-PDF.cs",
         "Convert-PPT-and-PPTX-to-TIFF.cs"
       ],
-      "required_namespaces": [],
-      "key_apis": []
+      "required_namespaces": [
+        "System",
+        "Aspose.Slides",
+        "Aspose.Slides.Export"
+      ],
+      "key_apis": [
+        "Aspose.Slides",
+        "Aspose.Slides.Export"
+      ]
     },
     {
       "name": "vba-macros",
@@ -51,8 +89,24 @@
         "Extract-vba-macro-from-PPTX-presentation.cs",
         "Remove-vba-macro-from-pptx-presentation.cs"
       ],
-      "required_namespaces": [],
-      "key_apis": []
+      "required_namespaces": [
+        "System",
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "System.IO",
+        "Aspose.Slides.Vba"
+      ],
+      "key_apis": [
+        "Aspose.Slides",
+        "Aspose.Slides.Export",
+        "Aspose.Slides.Presentation",
+        "Aspose.Slides.Vba",
+        "Aspose.Slides.Vba.IVbaProject",
+        "Aspose.Slides.Vba.IVbaModule",
+        "Aspose.Slides.Export.SaveFormat.Pptm",
+        "Aspose.Slides.LoadOptions",
+        "Aspose.Slides.Export.SaveFormat.Pptx"
+      ]
     }
   ]
 }
