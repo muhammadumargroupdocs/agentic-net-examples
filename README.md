@@ -77,7 +77,7 @@ Examples in this repository are automatically generated.
 
 ## License
 
-All examples require a valid Aspose license for production use.
+All examples require a valid [Aspose license](https://purchase.aspose.com/) for production use.
 
 ---
 
