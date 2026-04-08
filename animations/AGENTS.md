@@ -20,9 +20,10 @@ working within the **animations** category.
 
 ## Required Namespaces
 
+- `using System;` (2/2 files)
 - `using Aspose.Slides;` (2/2 files)
 - `using Aspose.Slides.Export;` (2/2 files)
-- `using System;` (1/2 files)
+- `using Aspose.Slides.Animation;` (1/2 files)
 
 ## Files in this folder
 
@@ -39,9 +40,8 @@ working within the **animations** category.
 
 - `Aspose.Slides`
 - `Aspose.Slides.Export`
-- `Aspose.Slides.Presentation`
-- `Aspose.Slides.Export.PdfOptions`
-- `Aspose.Slides.Export.SaveFormat.Pdf`
+- `Aspose.Slides.Animation`
+- `Aspose.Slides.SlideShow.TransitionType.None`
 
 ## Common Code Pattern
 

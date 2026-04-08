@@ -1,5 +1,6 @@
 using System;
 using Aspose.Slides;
+using Aspose.Slides.Animation;
 using Aspose.Slides.Export;
 
 class Program
@@ -8,16 +9,24 @@ class Program
     {
         try
         {
-            string inputPath = "input.pptx";
-            string outputPath = "output.pptx";
+            var inputPath = "input.pptx";
+            var outputPath = "output_no_animations.pptx";
 
-            using (Presentation presentation = new Presentation(inputPath))
+            using (var presentation = new Presentation(inputPath))
             {
-                // Remove all animation effects from each slide
-                foreach (ISlide slide in presentation.Slides)
+                foreach (var slide in presentation.Slides)
                 {
-                    // Clear the main animation sequence of the slide
+                    // Remove all main sequence animations
                     slide.Timeline.MainSequence.Clear();
+
+                    // Remove all interactive sequence animations
+                    foreach (var seq in slide.Timeline.InteractiveSequences)
+                    {
+                        seq.Clear();
+                    }
+
+                    // Remove slide transition (optional)
+                    slide.SlideShowTransition.Type = Aspose.Slides.SlideShow.TransitionType.None;
                 }
 
                 // Save the modified presentation
